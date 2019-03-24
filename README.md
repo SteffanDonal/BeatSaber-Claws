@@ -4,7 +4,7 @@ Custom mod for Beat Saber that shortens sabers from 100cm to 30cm.
 
 ## How to Play
 
-1. Install this mod.
+1. [Install this mod](https://www.modsaber.org/mod/claws).
 2. In the gameplay settings, find the "Claws" toggle and enable it!
 
 The default saber adjustments that come with Claws are setup for Oculus Touch controllers and regular Vive controllers.
