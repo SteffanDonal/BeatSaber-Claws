@@ -2,6 +2,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using UnityEngine;
 
 [assembly: AssemblyTitle("Claws")]
 [assembly: AssemblyFileVersion("1.0.0")]
@@ -13,6 +14,8 @@ namespace Claws
 {
     public class Plugin : IPlugin
     {
+        const string IsEnabledPreference = @"Claws.Plugin.IsEnabled";
+
         static Assembly Assembly { get; } = Assembly.GetExecutingAssembly();
 
         public static readonly string Name = Assembly.GetCustomAttribute<AssemblyTitleAttribute>()?.Title;
@@ -42,12 +45,25 @@ namespace Claws
 
         void IPlugin.OnApplicationStart()
         {
+            RestorePlayerPrefs();
+
             Log($"v{Version} loaded!");
         }
 
         void IPlugin.OnApplicationQuit()
         {
+            StorePlayerPrefs();
+        }
 
+
+        static void StorePlayerPrefs()
+        {
+            PlayerPrefs.SetInt(IsEnabledPreference, IsEnabled ? 1 : 0);
+            PlayerPrefs.Save();
+        }
+        static void RestorePlayerPrefs()
+        {
+            IsEnabled = PlayerPrefs.GetInt(IsEnabledPreference, 0) != 0;
         }
 
 
