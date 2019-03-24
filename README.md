@@ -48,7 +48,7 @@ Translation = Left/Right, Down/Up, Back/Forward
 The numbers you give are for the _left_ hand, they're mirrored for the right!
 
 * **Example**: If you entered `-0.07, 0, 0`, the sabers would be moved 7cm towards the middle of the room. (Negative X = Left)
-* **Example**: If you entered `90, 0, 0`, the sabers would 90 degrees down - towards the floor.
+* **Example**: If you entered `0, 0.04, 0`, the sabers would both move 4cm upwards.
 
 
 ### Rotation
