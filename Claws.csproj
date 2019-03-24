@@ -26,10 +26,16 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="IllusionPlugin">
+      <HintPath>TargetReferences\IllusionPlugin.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="Plugin.cs" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
