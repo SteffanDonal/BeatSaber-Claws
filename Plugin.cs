@@ -1,4 +1,5 @@
-﻿using IllusionPlugin;
+﻿using Harmony;
+using IllusionPlugin;
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -45,6 +46,19 @@ namespace Claws
 
         void IPlugin.OnApplicationStart()
         {
+            try
+            {
+                var harmony = HarmonyInstance.Create("com.github.steffandonal.claws");
+                harmony.PatchAll(Assembly);
+            }
+            catch (Exception e)
+            {
+                Log("This plugin requires Harmony. Make sure you installed the plugin properly, as the Harmony DLL should have been installed with it.");
+                Log(e.ToString());
+
+                return;
+            }
+
             RestorePlayerPrefs();
 
             Log($"v{Version} loaded!");

@@ -26,6 +26,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>TargetReferences\0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="IllusionPlugin">
       <HintPath>TargetReferences\IllusionPlugin.dll</HintPath>
       <Private>False</Private>
