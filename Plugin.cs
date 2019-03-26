@@ -31,6 +31,8 @@ namespace Claws
 
         static bool _isInitialized;
 
+        static Gamemode _gamemode;
+
 
         void IPlugin.OnApplicationStart()
         {
@@ -55,6 +57,8 @@ namespace Claws
             RestorePlayerPrefs();
             Preferences.Invalidate();
 
+            _gamemode = new Gamemode();
+
             Log($"v{Version} loaded!");
         }
 
@@ -72,6 +76,27 @@ namespace Claws
         static void RestorePlayerPrefs()
         {
             IsEnabled = PlayerPrefs.GetInt(IsEnabledPreference, 0) != 0;
+        }
+
+
+        internal static byte[] LoadResource(string resourceName)
+        {
+            resourceName = @"Claws.Resources." + resourceName;
+
+            Log($"Loading embedded resource: {resourceName}");
+
+            using (var resourceStream = Assembly.GetManifestResourceStream(resourceName))
+            {
+                if (resourceStream == null) return null;
+
+                var resource = new byte[resourceStream.Length];
+
+                resourceStream.Read(resource, 0, resource.Length);
+
+                Log($"Loaded {resourceName}");
+
+                return resource;
+            }
         }
 
 

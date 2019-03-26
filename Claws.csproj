@@ -30,6 +30,14 @@
       <HintPath>TargetReferences\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>TargetReferences\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="BeatSaberCustomUI">
+      <HintPath>TargetReferences\ModDependencies\BeatSaberCustomUI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="IllusionPlugin">
       <HintPath>TargetReferences\IllusionPlugin.dll</HintPath>
       <Private>False</Private>
@@ -41,10 +49,29 @@
       <HintPath>TargetReferences\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>TargetReferences\UnityEngine.ImageConversionModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.XRModule">
+      <HintPath>TargetReferences\UnityEngine.XRModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Zenject">
+      <HintPath>TargetReferences\Zenject.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Gamemode.cs" />
+    <Compile Include="Modifiers\SaberGrip.cs" />
+    <Compile Include="Modifiers\SaberLength.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Preferences.cs" />
+    <Compile Include="ReflectionUtility.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\GamemodeIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
