@@ -26,7 +26,7 @@ namespace Claws
         public static Vector3 RightTranslation { get; private set; }
         public static Vector3 RightRotation { get; private set; }
 
-        static VRPlatform _activePlatform = VRPlatform.Unknown;
+        public static VRPlatform ActiveVRPlatform { get; internal set; }
 
         static readonly Dictionary<VRPlatform, Vector3> DefaultTranslation = new Dictionary<VRPlatform, Vector3>
         {
@@ -51,8 +51,8 @@ namespace Claws
             }
             else
             {
-                LeftTranslation = DefaultTranslation[_activePlatform];
-                LeftRotation = DefaultRotation[_activePlatform];
+                LeftTranslation = DefaultTranslation[ActiveVRPlatform];
+                LeftRotation = DefaultRotation[ActiveVRPlatform];
             }
 
             RightTranslation = MirrorTranslation(LeftTranslation);
