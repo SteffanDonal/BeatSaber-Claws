@@ -53,6 +53,7 @@ namespace Claws
             }
 
             RestorePlayerPrefs();
+            Preferences.Invalidate();
 
             Log($"v{Version} loaded!");
         }
