@@ -29,8 +29,16 @@ namespace Claws
         public static bool IsEnabled { get; internal set; }
 
 
+        static bool _isInitialized;
+
+
         void IPlugin.OnApplicationStart()
         {
+            if (_isInitialized)
+                throw new InvalidOperationException($"Plugin had {nameof(IPlugin.OnApplicationStart)} called more than once! Critical failure.");
+
+            _isInitialized = true;
+
             try
             {
                 var harmony = HarmonyInstance.Create("com.github.steffandonal.claws");
