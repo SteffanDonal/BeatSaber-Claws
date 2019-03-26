@@ -70,12 +70,21 @@ namespace Claws
 
         static void StorePlayerPrefs()
         {
+            Log("Storing plugin preferences...");
+
             PlayerPrefs.SetInt(IsEnabledPreference, IsEnabled ? 1 : 0);
             PlayerPrefs.Save();
+
+            Log("Stored!");
         }
         static void RestorePlayerPrefs()
         {
+            Log("Loading plugin preferences...");
+
             IsEnabled = PlayerPrefs.GetInt(IsEnabledPreference, 0) != 0;
+
+            var pluginState = IsEnabled ? "enabled" : "disabled";
+            Log($"Loaded! Plugin is {pluginState}.");
         }
 
 

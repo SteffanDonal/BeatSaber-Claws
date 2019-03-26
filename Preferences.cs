@@ -44,6 +44,8 @@ namespace Claws
 
         public static void Invalidate()
         {
+            Plugin.Log("Refreshing user preferences...");
+
             if (ModPrefs.HasKey(PrefsSection, TranslationKey) || ModPrefs.HasKey(PrefsSection, RotationKey))
             {
                 LeftTranslation = ParseVector3(ModPrefs.GetString(PrefsSection, TranslationKey, "0,0,0"));
