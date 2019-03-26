@@ -18,8 +18,6 @@ namespace Claws
         const string TranslationKey = "Translation";
         const string RotationKey = "Rotation";
 
-        public static bool IsEnabled => Plugin.IsEnabled;
-
         public const float Length = 0.3f;
 
         public static Vector3 LeftTranslation { get; private set; }
