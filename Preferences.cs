@@ -49,10 +49,19 @@ namespace Claws
             LeftTranslation = Vector3.zero;
             LeftRotation = Vector3.zero;
 
-            if (ModPrefs.HasKey(PrefsSection, TranslationKey) || ModPrefs.HasKey(PrefsSection, RotationKey))
+            var userTranslationString = ModPrefs.GetString(PrefsSection, TranslationKey);
+            var userRotationString = ModPrefs.GetString(PrefsSection, TranslationKey);
+
+            // When any user preference exists, ignore all defaults.
+            if (!string.IsNullOrWhiteSpace(userTranslationString) || !string.IsNullOrWhiteSpace(userRotationString))
             {
-                LeftTranslation = ParseVector3(ModPrefs.GetString(PrefsSection, TranslationKey, "0,0,0"));
-                LeftRotation = ParseVector3(ModPrefs.GetString(PrefsSection, RotationKey, "0,0,0"));
+                Plugin.Log("Applying user offsets...");
+
+                if (!string.IsNullOrWhiteSpace(userTranslationString))
+                    LeftTranslation = ParseVector3(userTranslationString);
+
+                if (!string.IsNullOrWhiteSpace(userRotationString))
+                    LeftRotation = ParseVector3(userRotationString);
             }
             else
             {
