@@ -38,7 +38,6 @@ namespace Claws
 
         void OnGameLoaded(Scene loadedScene)
         {
-            Preferences.ActiveVRPlatform = (VRPlatform)PersistentSingleton<VRPlatformHelper>.instance.vrPlatformSDK;
             Preferences.Invalidate();
 
             var gameCore = loadedScene.GetRootGameObjects().First();

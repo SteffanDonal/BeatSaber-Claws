@@ -1,15 +1,20 @@
 ﻿using IllusionPlugin;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.XR;
 
 namespace Claws
 {
-    internal enum VRPlatform
+    internal enum VRControllerType
     {
-        OpenVR = 0,
-        Oculus = 1,
-        Unknown = 2
+        Unknown,
+        Vive,
+        Touch,
+        WMR,
+        Knuckles,
     }
 
     internal static class Preferences
@@ -26,20 +31,17 @@ namespace Claws
         public static Vector3 RightTranslation { get; private set; }
         public static Vector3 RightRotation { get; private set; }
 
-        public static VRPlatform ActiveVRPlatform { get; internal set; }
-
-        static readonly Dictionary<VRPlatform, Vector3> DefaultTranslation = new Dictionary<VRPlatform, Vector3>
+        static readonly Dictionary<VRControllerType, Vector3> DefaultTranslation = new Dictionary<VRControllerType, Vector3>
         {
-            { VRPlatform.OpenVR, Vector3.zero },
-            { VRPlatform.Oculus, Vector3.zero },
-            { VRPlatform.Unknown, Vector3.zero }
+            { VRControllerType.Unknown,      Vector3.zero },
+            { VRControllerType.Vive,     new Vector3(-0.04f, -0.0125f, -0.06f) },
+            { VRControllerType.Knuckles, new Vector3(-0.04f, -0.0225f, -0.11f) }
         };
-
-        static readonly Dictionary<VRPlatform, Vector3> DefaultRotation = new Dictionary<VRPlatform, Vector3>
+        static readonly Dictionary<VRControllerType, Vector3> DefaultRotation = new Dictionary<VRControllerType, Vector3>
         {
-            { VRPlatform.OpenVR, Vector3.zero },
-            { VRPlatform.Oculus, Vector3.zero },
-            { VRPlatform.Unknown, Vector3.zero }
+            { VRControllerType.Unknown,      Vector3.zero },
+            { VRControllerType.Vive,     new Vector3(75f, 0f, 90f) },
+            { VRControllerType.Knuckles, new Vector3(75f, 0f, 90f) }
         };
 
         public static void Invalidate()
@@ -65,12 +67,65 @@ namespace Claws
             }
             else
             {
-                LeftTranslation = DefaultTranslation[ActiveVRPlatform];
-                LeftRotation = DefaultRotation[ActiveVRPlatform];
+                var controllerType = GetActiveControllersType();
+
+                Plugin.Log($"Applying default offsets for {controllerType} controllers!");
+
+                if (DefaultTranslation.ContainsKey(controllerType))
+                    LeftTranslation = DefaultTranslation[controllerType];
+
+                if (DefaultRotation.ContainsKey(controllerType))
+                    LeftRotation = DefaultRotation[controllerType];
             }
 
             RightTranslation = MirrorTranslation(LeftTranslation);
             RightRotation = MirrorRotation(LeftRotation);
+        }
+
+        static VRControllerType GetActiveControllersType()
+        {
+            var nodeStates = new List<XRNodeState>();
+            InputTracking.GetNodeStates(nodeStates);
+
+            var controllers = nodeStates
+                .Where(node => node.nodeType == XRNode.LeftHand || node.nodeType == XRNode.RightHand)
+                .Select(node => InputTracking.GetNodeName(node.uniqueID))
+                .Where(controller => !string.IsNullOrWhiteSpace(controller));
+
+            foreach (var controller in controllers)
+            {
+                /*
+                 * Known Vive controller names:
+                 *   Vive. Controller MV
+                 *   Vive. Controller DVT
+                 */
+                if (controller.IndexOf(@"Vive", StringComparison.InvariantCultureIgnoreCase) >= 0)
+                    return VRControllerType.Vive;
+
+                /*
+                 * Known Oculus controller names:
+                 *   Oculus Rift CV1
+                 */
+                if (controller.IndexOf(@"Oculus Rift", StringComparison.InvariantCultureIgnoreCase) >= 0)
+                    return VRControllerType.Touch;
+
+                /*
+                 * Known WMR controller names:
+                 *   WindowsMR: 0x045e/0x065b/0/2
+                 */
+                if (controller.IndexOf(@"WindowsMR", StringComparison.InvariantCultureIgnoreCase) >= 0)
+                    return VRControllerType.WMR;
+
+                /*
+                 * Known Knuckles controller names:
+                 *   Knuckles EV1.3
+                 *   Knuckles EV3.0
+                 */
+                if (controller.IndexOf(@"Knuckles", StringComparison.InvariantCultureIgnoreCase) >= 0)
+                    return VRControllerType.Knuckles;
+            }
+
+            return VRControllerType.Unknown;
         }
 
         static Vector3 MirrorTranslation(Vector3 translation) => new Vector3(-translation.x, translation.y, translation.z);
