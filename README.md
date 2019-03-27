@@ -12,20 +12,6 @@ The default saber adjustments that come with Claws are setup for Oculus Touch co
 It's worth taking some time to adjust your settings so it's comfortable!
 
 
-## Premade Adjustments
-
-All settings are stored in `Beat Saber\UserData\modprefs.ini`. Open this file, and copy one of the presets from below. Make sure that you check for any other `[Claws]` settings and replace them if they exist.
-
-
-### Knuckles Controllers
-
-```ini
-[Claws]
-Translation = -0.04, -0.0225, -0.11
-Rotation = 75, 0, 90
-```
-
-
 ## How to Customize
 
 You can modify the settings in `modprefs.ini` whilst the game is running - it is reloaded every time a song starts.
