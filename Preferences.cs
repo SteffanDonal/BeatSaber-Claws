@@ -46,6 +46,9 @@ namespace Claws
         {
             Plugin.Log("Refreshing user preferences...");
 
+            LeftTranslation = Vector3.zero;
+            LeftRotation = Vector3.zero;
+
             if (ModPrefs.HasKey(PrefsSection, TranslationKey) || ModPrefs.HasKey(PrefsSection, RotationKey))
             {
                 LeftTranslation = ParseVector3(ModPrefs.GetString(PrefsSection, TranslationKey, "0,0,0"));
