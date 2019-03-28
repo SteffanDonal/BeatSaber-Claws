@@ -33,6 +33,10 @@ namespace Claws
 
         static Gamemode _gamemode;
 
+        internal static Sprite IconSprite { get; private set; }
+
+        static Texture2D _iconTexture;
+
 
         void IPlugin.OnApplicationStart()
         {
@@ -53,6 +57,8 @@ namespace Claws
 
                 return;
             }
+
+            LoadIcon();
 
             RestorePlayerPrefs();
             Preferences.Invalidate();
@@ -87,6 +93,17 @@ namespace Claws
             Log($"Loaded! Plugin is {pluginState}.");
         }
 
+        static void LoadIcon()
+        {
+            _iconTexture = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+            _iconTexture.LoadImage(Plugin.LoadResource("GamemodeIcon.png"));
+
+            IconSprite = Sprite.Create(
+                _iconTexture,
+                new Rect(0, 0, _iconTexture.width, _iconTexture.height),
+                Vector2.one * 0.5f
+            );
+        }
 
         internal static byte[] LoadResource(string resourceName)
         {

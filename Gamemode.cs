@@ -13,21 +13,9 @@ namespace Claws
 
         ToggleOption _gamemodeToggle;
 
-        Texture2D _gamemodeIconTexture;
-        Sprite _gamemodeIconSprite;
-
         internal Gamemode()
         {
             SceneManager.sceneLoaded += OnSceneManagerSceneLoaded;
-
-            _gamemodeIconTexture = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-            _gamemodeIconTexture.LoadImage(Plugin.LoadResource("GamemodeIcon.png"));
-
-            _gamemodeIconSprite = Sprite.Create(
-                _gamemodeIconTexture,
-                new Rect(0, 0, _gamemodeIconTexture.width, _gamemodeIconTexture.height),
-                Vector2.one * 0.5f
-            );
         }
 
         void OnSceneManagerSceneLoaded(Scene loadedScene, LoadSceneMode loadSceneMode)
@@ -62,7 +50,7 @@ namespace Claws
                 GameplaySettingsPanels.ModifiersLeft,
                 "Claws Mode",
                 hintText: "Shortens saber hitboxes to 0.3m, and adjusts grip.",
-                optionIcon: _gamemodeIconSprite
+                optionIcon: Plugin.IconSprite
             );
 
             _gamemodeToggle.GetValue = Plugin.IsEnabled;
