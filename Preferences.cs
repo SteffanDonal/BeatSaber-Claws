@@ -52,7 +52,7 @@ namespace Claws
             LeftRotation = Vector3.zero;
 
             var userTranslationString = ModPrefs.GetString(PrefsSection, TranslationKey);
-            var userRotationString = ModPrefs.GetString(PrefsSection, TranslationKey);
+            var userRotationString = ModPrefs.GetString(PrefsSection, RotationKey);
 
             // When any user preference exists, ignore all defaults.
             if (!string.IsNullOrWhiteSpace(userTranslationString) || !string.IsNullOrWhiteSpace(userRotationString))
