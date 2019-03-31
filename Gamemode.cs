@@ -1,7 +1,6 @@
 ﻿using Claws.Modifiers;
 using CustomUI.GameplaySettings;
 using System.Linq;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Claws
@@ -21,7 +20,7 @@ namespace Claws
         void OnSceneManagerSceneLoaded(Scene loadedScene, LoadSceneMode loadSceneMode)
         {
             if (loadedScene.name == "GameCore") OnGameLoaded(loadedScene);
-            if (loadedScene.name == "MenuCore") OnMenuLoaded(loadedScene);
+            if (loadedScene.name == "MenuCore") OnMenuLoaded();
         }
 
         void OnGameLoaded(Scene loadedScene)
@@ -39,7 +38,7 @@ namespace Claws
             }
         }
 
-        void OnMenuLoaded(Scene loadedScene)
+        void OnMenuLoaded()
         {
             if (_gamemodeToggle != null)
             {
@@ -55,11 +54,23 @@ namespace Claws
 
             _gamemodeToggle.GetValue = Plugin.IsEnabled;
             _gamemodeToggle.OnToggle += OnGamemodeToggled;
+
+            UpdateCapability();
         }
 
         void OnGamemodeToggled(bool isEnabled)
         {
             Plugin.IsEnabled = isEnabled;
+
+            UpdateCapability();
+        }
+
+        void UpdateCapability()
+        {
+            if (Plugin.IsEnabled)
+                SongLoaderPlugin.SongLoader.RegisterCapability(Plugin.CapabilityName);
+            else
+                SongLoaderPlugin.SongLoader.DeregisterizeCapability(Plugin.CapabilityName);
         }
     }
 }

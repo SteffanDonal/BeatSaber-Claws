@@ -42,6 +42,9 @@
       <HintPath>TargetReferences\IllusionPlugin.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SongLoaderPlugin">
+      <HintPath>TargetReferences\ModDependencies\SongLoaderPlugin.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Private>False</Private>
     </Reference>

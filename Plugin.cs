@@ -17,6 +17,8 @@ namespace Claws
     {
         const string IsEnabledPreference = @"Claws.Plugin.IsEnabled";
 
+        internal const string CapabilityName = @"Claws";
+
         static Assembly Assembly { get; } = Assembly.GetExecutingAssembly();
 
         public static readonly string Name = Assembly.GetCustomAttribute<AssemblyTitleAttribute>()?.Title;
