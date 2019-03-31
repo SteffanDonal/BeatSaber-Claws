@@ -96,7 +96,7 @@ namespace Claws
         static void LoadIcon()
         {
             _iconTexture = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-            _iconTexture.LoadImage(Plugin.LoadResource("GamemodeIcon.png"));
+            _iconTexture.LoadImage(LoadResource("GamemodeIcon.png"));
 
             IconSprite = Sprite.Create(
                 _iconTexture,
