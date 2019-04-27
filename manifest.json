@@ -1,0 +1,11 @@
+﻿{
+  "$schema": "https://github.com/beat-saber-modding-group/BSIPA-MetadataFileSchema/master/Schema.json",
+  "author": "Ruirize",
+  "description": "Custom mod for Beat Saber that shortens sabers from 100cm to 30cm.",
+  "gameVersion": "0.13.2",
+  "id": "claws",
+  "name": "Claws Mod",
+  "version": "1.0.0",
+  "features": [
+  ]
+}

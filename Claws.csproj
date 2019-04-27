@@ -8,9 +8,10 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Claws</RootNamespace>
     <AssemblyName>Claws</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Plugin|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -26,8 +27,8 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>TargetReferences\0Harmony.dll</HintPath>
+    <Reference Include="0Harmony.1.2.0.1">
+      <HintPath>TargetReferences\ModDependencies\Harmony\0Harmony.1.2.0.1.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
@@ -35,15 +36,17 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="BeatSaberCustomUI">
-      <HintPath>TargetReferences\ModDependencies\BeatSaberCustomUI.dll</HintPath>
+      <HintPath>TargetReferences\ModDependencies\BeatSaberCustomUI\BeatSaberCustomUI.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="IllusionPlugin">
-      <HintPath>TargetReferences\IllusionPlugin.dll</HintPath>
+    <Reference Include="IPA.Loader">
+      <HintPath>TargetReferences\ModDependencies\IPA.Loader\IPA.Loader.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="SongLoaderPlugin">
-      <HintPath>TargetReferences\ModDependencies\SongLoaderPlugin.dll</HintPath>
+    <Reference Include="SongLoaderPlugin, Version=6.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>TargetReferences\ModDependencies\SongLoaderPlugin\SongLoaderPlugin.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System">
       <Private>False</Private>
@@ -75,6 +78,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\GamemodeIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="manifest.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

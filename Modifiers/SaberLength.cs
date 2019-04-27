@@ -15,18 +15,18 @@ namespace Claws.Modifiers
 
             Plugin.Log("Setting up length adjustments...");
 
-            var handControllers = gameCore.transform
+            var saberManagerObj = gameCore.transform
                 .Find("Origin")
                 ?.Find("VRGameCore")
-                ?.Find("HandControllers");
+                ?.Find("SaberManager");
 
-            if (handControllers == null)
+            if (saberManagerObj == null)
             {
-                Plugin.Log("Couldn't find HandControllers, bailing!");
+                Plugin.Log("Couldn't find SaberManager, bailing!");
                 return;
             }
 
-            var saberManager = handControllers.GetComponent<SaberManager>();
+            var saberManager = saberManagerObj.GetComponent<SaberManager>();
 
             _leftSaber = saberManager.GetPrivateField<Saber>("_leftSaber");
             _rightSaber = saberManager.GetPrivateField<Saber>("_rightSaber");

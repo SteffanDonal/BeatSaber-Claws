@@ -1,9 +1,10 @@
 ﻿using Harmony;
-using IllusionPlugin;
+using IPA;
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [assembly: AssemblyTitle("Claws")]
 [assembly: AssemblyFileVersion("1.0.0")]
@@ -13,7 +14,7 @@ using UnityEngine;
 
 namespace Claws
 {
-    public class Plugin : IPlugin
+    public class Plugin : IBeatSaberPlugin
     {
         const string IsEnabledPreference = @"Claws.Plugin.IsEnabled";
 
@@ -40,10 +41,10 @@ namespace Claws
         static Texture2D _iconTexture;
 
 
-        void IPlugin.OnApplicationStart()
+        void IBeatSaberPlugin.OnApplicationStart()
         {
             if (_isInitialized)
-                throw new InvalidOperationException($"Plugin had {nameof(IPlugin.OnApplicationStart)} called more than once! Critical failure.");
+                throw new InvalidOperationException($"Plugin had {nameof(IBeatSaberPlugin.OnApplicationStart)} called more than once! Critical failure.");
 
             _isInitialized = true;
 
@@ -70,7 +71,7 @@ namespace Claws
             Log($"v{Version} loaded!");
         }
 
-        void IPlugin.OnApplicationQuit()
+        void IBeatSaberPlugin.OnApplicationQuit()
         {
             StorePlayerPrefs();
         }
@@ -136,13 +137,11 @@ namespace Claws
 
         #region Unused IPlugin Members
 
-        string IPlugin.Name => Name;
-        string IPlugin.Version => Version;
-
-        void IPlugin.OnUpdate() { }
-        void IPlugin.OnFixedUpdate() { }
-        void IPlugin.OnLevelWasLoaded(int level) { }
-        void IPlugin.OnLevelWasInitialized(int level) { }
+        void IBeatSaberPlugin.OnUpdate() { }
+        void IBeatSaberPlugin.OnFixedUpdate() { }
+        void IBeatSaberPlugin.OnActiveSceneChanged(Scene from, Scene to) { }
+        void IBeatSaberPlugin.OnSceneLoaded(Scene scene, LoadSceneMode mode) { }
+        void IBeatSaberPlugin.OnSceneUnloaded(Scene scene) { }
 
         #endregion
     }
