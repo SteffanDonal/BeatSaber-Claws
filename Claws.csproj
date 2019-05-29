@@ -40,12 +40,11 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="IPA.Loader">
-      <HintPath>TargetReferences\ModDependencies\IPA.Loader\IPA.Loader.dll</HintPath>
+      <HintPath>TargetReferences\IPA.Loader.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="SongLoaderPlugin, Version=6.8.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>TargetReferences\ModDependencies\SongLoaderPlugin\SongLoaderPlugin.dll</HintPath>
+    <Reference Include="SongLoader">
+      <HintPath>TargetReferences\ModDependencies\SongLoader\SongLoader.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System">
