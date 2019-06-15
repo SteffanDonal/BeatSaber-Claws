@@ -34,14 +34,14 @@ namespace Claws
         static readonly Dictionary<VRControllerType, Vector3> DefaultTranslation = new Dictionary<VRControllerType, Vector3>
         {
             { VRControllerType.Unknown,      Vector3.zero },
-            { VRControllerType.Vive,      new Vector3(-0.04f, -0.0125f, -0.06f) },
+            { VRControllerType.Vive,     new Vector3(-0.04f, -0.0125f, -0.06f) },
             { VRControllerType.Touch,    new Vector3(-0.03f, -0.0225f, -0.095f) },
             { VRControllerType.Knuckles, new Vector3(-0.04f, -0.0225f, -0.11f) }
         };
         static readonly Dictionary<VRControllerType, Vector3> DefaultRotation = new Dictionary<VRControllerType, Vector3>
         {
             { VRControllerType.Unknown,      Vector3.zero },
-            { VRControllerType.Vive,      new Vector3(75f, 0f, 90f) },
+            { VRControllerType.Vive,     new Vector3(75f, 0f, 90f) },
             { VRControllerType.Touch,    new Vector3(75f, 0f, 90f) },
             { VRControllerType.Knuckles, new Vector3(75f, 0f, 90f) }
         };
