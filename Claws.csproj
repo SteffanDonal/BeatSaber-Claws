@@ -32,7 +32,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>TargetReferences\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\Beat Saber\Beat Saber_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="BeatSaberCustomUI">
@@ -40,30 +40,29 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="IPA.Loader">
-      <HintPath>TargetReferences\IPA.Loader.dll</HintPath>
+      <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\Beat Saber\Beat Saber_Data\Managed\IPA.Loader.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="SongLoader">
-      <HintPath>TargetReferences\ModDependencies\SongLoader\SongLoader.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="SongCore">
+      <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\Beat Saber\Plugins\SongCore.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>TargetReferences\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\Beat Saber\Beat Saber_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.ImageConversionModule">
-      <HintPath>TargetReferences\UnityEngine.ImageConversionModule.dll</HintPath>
+      <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\Beat Saber\Beat Saber_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.XRModule">
-      <HintPath>TargetReferences\UnityEngine.XRModule.dll</HintPath>
+      <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\Beat Saber\Beat Saber_Data\Managed\UnityEngine.XRModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Zenject">
-      <HintPath>TargetReferences\Zenject.dll</HintPath>
+      <HintPath>..\..\..\..\Program Files (x86)\Steam\steamapps\common\Beat Saber\Beat Saber_Data\Managed\Zenject.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

@@ -51,18 +51,39 @@ namespace Claws
 
         public static void Invalidate()
         {
-            Plugin.Log("Refreshing user preferences...");
+
+            LeftTranslation = Vector3.zero;
+            LeftRotation = Vector3.zero;
+            var controllerType = GetActiveControllersType();
+
+            Plugin.Log.Debug($"Applying default offsets for {controllerType} controllers!");
+
+            if (DefaultTranslation.ContainsKey(controllerType))
+                LeftTranslation = DefaultTranslation[controllerType];
+
+            if (DefaultRotation.ContainsKey(controllerType))
+                LeftRotation = DefaultRotation[controllerType];
+
+            RightTranslation = MirrorTranslation(LeftTranslation);
+            RightRotation = MirrorRotation(LeftRotation);
+        }
+        /* Removed this in case anyone wanted to inject their own preferences. 
+         * I'd prefer that folks Claws experiences be the same throughout.
+        public static void Invalidate_old()
+        {
+            Plugin.Log.Debug("Refreshing user preferences...");
 
             LeftTranslation = Vector3.zero;
             LeftRotation = Vector3.zero;
 
-            var userTranslationString = ModPrefs.GetString(PrefsSection, TranslationKey);
-            var userRotationString = ModPrefs.GetString(PrefsSection, RotationKey);
+
+            String userTranslationString = ModPrefs.GetString(PrefsSection, TranslationKey);
+            String userRotationString = ModPrefs.GetString(PrefsSection, RotationKey);
 
             // When any user preference exists, ignore all defaults.
             if (!string.IsNullOrWhiteSpace(userTranslationString) || !string.IsNullOrWhiteSpace(userRotationString))
             {
-                Plugin.Log("Applying user offsets...");
+                Plugin.Log.Debug("Applying user offsets...");
 
                 if (!string.IsNullOrWhiteSpace(userTranslationString))
                     LeftTranslation = ParseVector3(userTranslationString);
@@ -72,20 +93,12 @@ namespace Claws
             }
             else
             {
-                var controllerType = GetActiveControllersType();
-
-                Plugin.Log($"Applying default offsets for {controllerType} controllers!");
-
-                if (DefaultTranslation.ContainsKey(controllerType))
-                    LeftTranslation = DefaultTranslation[controllerType];
-
-                if (DefaultRotation.ContainsKey(controllerType))
-                    LeftRotation = DefaultRotation[controllerType];
+                Invalidate();
             }
 
             RightTranslation = MirrorTranslation(LeftTranslation);
             RightRotation = MirrorRotation(LeftRotation);
-        }
+        }*/
 
         static VRControllerType GetActiveControllersType()
         {
@@ -134,7 +147,12 @@ namespace Claws
                 if (controller.IndexOf(@"Knuckles", StringComparison.InvariantCultureIgnoreCase) >= 0)
                     return VRControllerType.Knuckles;
 
+<<<<<<< Updated upstream
                 Plugin.Log("Discovering controller: " + controller.ToString() + "failed! please open an issue with this log statement");
+=======
+                Plugin.Log.Error("Discovering controller: " + controller.ToString() + "failed! please open an issue with this log statement"
+                    );
+>>>>>>> Stashed changes
             }
 
             return VRControllerType.Unknown;

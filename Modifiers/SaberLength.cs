@@ -13,7 +13,7 @@ namespace Claws.Modifiers
             _leftSaber = null;
             _rightSaber = null;
 
-            Plugin.Log("Setting up length adjustments...");
+            Plugin.Log.Info("Setting up length adjustments...");
 
             var saberManagerObj = gameCore.transform
                 .Find("Origin")
@@ -22,7 +22,7 @@ namespace Claws.Modifiers
 
             if (saberManagerObj == null)
             {
-                Plugin.Log("Couldn't find SaberManager, bailing!");
+                Plugin.Log.Critical("Couldn't find SaberManager, bailing!");
                 return;
             }
 
@@ -33,16 +33,16 @@ namespace Claws.Modifiers
 
             if (_leftSaber is null || _rightSaber is null)
             {
-                Plugin.Log("Sabers couldn't be found. Bailing!");
+                Plugin.Log.Critical("Sabers couldn't be found. Bailing!");
                 return;
             }
 
-            Plugin.Log("Length adjustments ready!");
+            Plugin.Log.Info("Length adjustments ready!");
         }
 
         internal void SetLength(float length)
         {
-            Plugin.Log($"Setting sabers length to {length:0.00}m");
+            Plugin.Log.Debug($"Setting sabers length to {length:0.00}m");
 
             if (_leftSaber != null)
                 SetSaberLength(_leftSaber, length);

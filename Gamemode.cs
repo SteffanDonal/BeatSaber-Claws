@@ -68,9 +68,10 @@ namespace Claws
         void UpdateCapability()
         {
             if (Plugin.IsEnabled)
-                SongLoaderPlugin.SongLoader.RegisterCapability(Plugin.CapabilityName);
+                SongCore.Collections.RegisterCapability(Plugin.CapabilityName);
+
             else
-                SongLoaderPlugin.SongLoader.DeregisterizeCapability(Plugin.CapabilityName);
+                SongCore.Collections.DeregisterizeCapability(Plugin.CapabilityName);
         }
     }
 }
