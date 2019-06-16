@@ -33,7 +33,7 @@
     </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>TargetReferences\Assembly-CSharp.dll</HintPath>
-	  <Private>False</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="BeatSaberCustomUI">
       <HintPath>TargetReferences\ModDependencies\BeatSaberCustomUI\BeatSaberCustomUI.dll</HintPath>
@@ -41,31 +41,31 @@
     </Reference>
     <Reference Include="IPA.Loader">
       <HintPath>TargetReferences\IPA.Loader.dll</HintPath>
-	  <Private>False</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="SongCore, Version=2.0.9.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>TargetReferences\SongCore.dll</HintPath>
-	  <Private>False</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>TargetReferences\UnityEngine.CoreModule.dll</HintPath>
-	  <Private>False</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.ImageConversionModule">
       <HintPath>TargetReferences\UnityEngine.ImageConversionModule.dll</HintPath>
-	  <Private>False</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.XRModule">
       <HintPath>TargetReferences\UnityEngine.XRModule.dll</HintPath>
-	  <Private>False</Private>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Zenject">
       <HintPath>TargetReferences\Zenject.dll</HintPath>
-	  <Private>False</Private>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
