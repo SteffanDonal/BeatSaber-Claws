@@ -67,38 +67,6 @@ namespace Claws
             RightTranslation = MirrorTranslation(LeftTranslation);
             RightRotation = MirrorRotation(LeftRotation);
         }
-        /* Removed this in case anyone wanted to inject their own preferences. 
-         * I'd prefer that folks Claws experiences be the same throughout.
-        public static void Invalidate_old()
-        {
-            Plugin.Log.Debug("Refreshing user preferences...");
-
-            LeftTranslation = Vector3.zero;
-            LeftRotation = Vector3.zero;
-
-
-            String userTranslationString = ModPrefs.GetString(PrefsSection, TranslationKey);
-            String userRotationString = ModPrefs.GetString(PrefsSection, RotationKey);
-
-            // When any user preference exists, ignore all defaults.
-            if (!string.IsNullOrWhiteSpace(userTranslationString) || !string.IsNullOrWhiteSpace(userRotationString))
-            {
-                Plugin.Log.Debug("Applying user offsets...");
-
-                if (!string.IsNullOrWhiteSpace(userTranslationString))
-                    LeftTranslation = ParseVector3(userTranslationString);
-
-                if (!string.IsNullOrWhiteSpace(userRotationString))
-                    LeftRotation = ParseVector3(userRotationString);
-            }
-            else
-            {
-                Invalidate();
-            }
-
-            RightTranslation = MirrorTranslation(LeftTranslation);
-            RightRotation = MirrorRotation(LeftRotation);
-        }*/
 
         static VRControllerType GetActiveControllersType()
         {
