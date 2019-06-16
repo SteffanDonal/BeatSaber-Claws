@@ -1,4 +1,4 @@
-using IPA.Config;
+﻿using IPA.Config;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -147,12 +147,8 @@ namespace Claws
                 if (controller.IndexOf(@"Knuckles", StringComparison.InvariantCultureIgnoreCase) >= 0)
                     return VRControllerType.Knuckles;
 
-<<<<<<< Updated upstream
-                Plugin.Log("Discovering controller: " + controller.ToString() + "failed! please open an issue with this log statement");
-=======
                 Plugin.Log.Error("Discovering controller: " + controller.ToString() + "failed! please open an issue with this log statement"
                     );
->>>>>>> Stashed changes
             }
 
             return VRControllerType.Unknown;
