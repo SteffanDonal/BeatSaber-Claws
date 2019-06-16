@@ -40,7 +40,12 @@ namespace Claws
         internal static Sprite IconSprite { get; private set; }
 
         static Texture2D _iconTexture;
+        public static IPALogger Log { get; internal set; }
 
+        public void Init(object thisIsNull, IPALogger log)
+        {
+            Log = log;
+        }
 
         void IBeatSaberPlugin.OnApplicationStart()
         {
@@ -130,13 +135,6 @@ namespace Claws
         }
 
 
-     
-       public static IPALogger Log { get; internal set; }
-
-    public void Init(object thisIsNull, IPALogger log)
-    {
-        Log = log;
-    }
     #region Unused IPlugin Members
 
     void IBeatSaberPlugin.OnUpdate() { }
