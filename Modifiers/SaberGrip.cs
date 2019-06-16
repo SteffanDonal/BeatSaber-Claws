@@ -14,7 +14,7 @@ namespace Claws.Modifiers
             LeftSaber = null;
             RightSaber = null;
 
-            Plugin.Log("Setting up grip adjustments...");
+            Plugin.Log.Info("Setting up grip adjustments...");
 
             var saberManagerObj = gameCore.transform
                 .Find("Origin")
@@ -23,7 +23,7 @@ namespace Claws.Modifiers
 
             if (saberManagerObj == null)
             {
-                Plugin.Log("Couldn't find SaberManager, bailing!");
+                Plugin.Log.Critical("Couldn't find SaberManager, bailing!");
                 return;
             }
 
@@ -34,11 +34,11 @@ namespace Claws.Modifiers
 
             if (LeftSaber is null || RightSaber is null)
             {
-                Plugin.Log("Sabers couldn't be found. Bailing!");
+                Plugin.Log.Critical("Sabers couldn't be found. Bailing!");
                 return;
             }
 
-            Plugin.Log("Grip adjustments ready!");
+            Plugin.Log.Info("Grip adjustments ready!");
         }
     }
 

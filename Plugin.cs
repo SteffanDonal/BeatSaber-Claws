@@ -1,5 +1,6 @@
 ﻿using Harmony;
 using IPA;
+using IPALogger = IPA.Logging.Logger;
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -39,7 +40,12 @@ namespace Claws
         internal static Sprite IconSprite { get; private set; }
 
         static Texture2D _iconTexture;
+        public static IPALogger Log { get; internal set; }
 
+        public void Init(object thisIsNull, IPALogger log)
+        {
+            Log = log;
+        }
 
         void IBeatSaberPlugin.OnApplicationStart()
         {
@@ -55,8 +61,8 @@ namespace Claws
             }
             catch (Exception e)
             {
-                Log("This plugin requires Harmony. Make sure you installed the plugin properly, as the Harmony DLL should have been installed with it.");
-                Log(e.ToString());
+                Log.Error("This plugin requires Harmony. Make sure you installed the plugin properly, as the Harmony DLL should have been installed with it.");
+                Log.Error(e.ToString());
 
                 return;
             }
@@ -68,7 +74,7 @@ namespace Claws
 
             _gamemode = new Gamemode();
 
-            Log($"v{Version} loaded!");
+            Log.Info($"v{Version} loaded!");
         }
 
         void IBeatSaberPlugin.OnApplicationQuit()
@@ -79,21 +85,21 @@ namespace Claws
 
         static void StorePlayerPrefs()
         {
-            Log("Storing plugin preferences...");
+            Log.Info("Storing plugin preferences...");
 
             PlayerPrefs.SetInt(IsEnabledPreference, IsEnabled ? 1 : 0);
             PlayerPrefs.Save();
 
-            Log("Stored!");
+            Log.Info("Stored!");
         }
         static void RestorePlayerPrefs()
         {
-            Log("Loading plugin preferences...");
+            Log.Info("Loading plugin preferences...");
 
             IsEnabled = PlayerPrefs.GetInt(IsEnabledPreference, 0) != 0;
 
             var pluginState = IsEnabled ? "enabled" : "disabled";
-            Log($"Loaded! Plugin is {pluginState}.");
+            Log.Info($"Loaded! Plugin is {pluginState}.");
         }
 
         static void LoadIcon()
@@ -112,7 +118,7 @@ namespace Claws
         {
             resourceName = @"Claws.Resources." + resourceName;
 
-            Log($"Loading embedded resource: {resourceName}");
+            Log.Info($"Loading embedded resource: {resourceName}");
 
             using (var resourceStream = Assembly.GetManifestResourceStream(resourceName))
             {
@@ -122,22 +128,16 @@ namespace Claws
 
                 resourceStream.Read(resource, 0, resource.Length);
 
-                Log($"Loaded {resourceName}");
+                Log.Info($"Loaded {resourceName}");
 
                 return resource;
             }
         }
 
 
-        internal static void Log(string message)
-        {
-            Console.WriteLine($"[{Name}] {message}");
-        }
+    #region Unused IPlugin Members
 
-
-        #region Unused IPlugin Members
-
-        void IBeatSaberPlugin.OnUpdate() { }
+    void IBeatSaberPlugin.OnUpdate() { }
         void IBeatSaberPlugin.OnFixedUpdate() { }
         void IBeatSaberPlugin.OnActiveSceneChanged(Scene from, Scene to) { }
         void IBeatSaberPlugin.OnSceneLoaded(Scene scene, LoadSceneMode mode) { }

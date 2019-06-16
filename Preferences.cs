@@ -15,6 +15,7 @@ namespace Claws
         Touch,
         WMR,
         Knuckles,
+        OculusStoreTouch,
     }
 
     internal static class Preferences
@@ -34,49 +35,34 @@ namespace Claws
         static readonly Dictionary<VRControllerType, Vector3> DefaultTranslation = new Dictionary<VRControllerType, Vector3>
         {
             { VRControllerType.Unknown,      Vector3.zero },
-            { VRControllerType.Vive,     new Vector3(-0.04f, -0.0125f, -0.06f) },
-            { VRControllerType.Knuckles, new Vector3(-0.04f, -0.0225f, -0.11f) }
+            { VRControllerType.Vive,      new Vector3(-0.04f, -0.0125f, -0.06f) },
+            { VRControllerType.Touch,    new Vector3(-0.03f, -0.0225f, -0.095f ) },
+            { VRControllerType.Knuckles, new Vector3(-0.04f, -0.0225f, -0.11f) },
+            { VRControllerType.OculusStoreTouch, new Vector3(-0.1f, -0.0225f, -0.06f) }
         };
         static readonly Dictionary<VRControllerType, Vector3> DefaultRotation = new Dictionary<VRControllerType, Vector3>
         {
             { VRControllerType.Unknown,      Vector3.zero },
-            { VRControllerType.Vive,     new Vector3(75f, 0f, 90f) },
-            { VRControllerType.Knuckles, new Vector3(75f, 0f, 90f) }
+            { VRControllerType.Vive,      new Vector3(75f, 0f, 90f) },
+            { VRControllerType.Touch,    new Vector3(75f, 0f, 90f ) },
+            { VRControllerType.Knuckles, new Vector3(75f, 0f, 90f) },
+            { VRControllerType.OculusStoreTouch, new Vector3(25f, 0f, 90f) }
         };
 
         public static void Invalidate()
         {
-            Plugin.Log("Refreshing user preferences...");
 
             LeftTranslation = Vector3.zero;
             LeftRotation = Vector3.zero;
+            var controllerType = GetActiveControllersType();
 
-            var userTranslationString = ModPrefs.GetString(PrefsSection, TranslationKey);
-            var userRotationString = ModPrefs.GetString(PrefsSection, RotationKey);
+            Plugin.Log.Debug($"Applying default offsets for {controllerType} controllers!");
 
-            // When any user preference exists, ignore all defaults.
-            if (!string.IsNullOrWhiteSpace(userTranslationString) || !string.IsNullOrWhiteSpace(userRotationString))
-            {
-                Plugin.Log("Applying user offsets...");
+            if (DefaultTranslation.ContainsKey(controllerType))
+                LeftTranslation = DefaultTranslation[controllerType];
 
-                if (!string.IsNullOrWhiteSpace(userTranslationString))
-                    LeftTranslation = ParseVector3(userTranslationString);
-
-                if (!string.IsNullOrWhiteSpace(userRotationString))
-                    LeftRotation = ParseVector3(userRotationString);
-            }
-            else
-            {
-                var controllerType = GetActiveControllersType();
-
-                Plugin.Log($"Applying default offsets for {controllerType} controllers!");
-
-                if (DefaultTranslation.ContainsKey(controllerType))
-                    LeftTranslation = DefaultTranslation[controllerType];
-
-                if (DefaultRotation.ContainsKey(controllerType))
-                    LeftRotation = DefaultRotation[controllerType];
-            }
+            if (DefaultRotation.ContainsKey(controllerType))
+                LeftRotation = DefaultRotation[controllerType];
 
             RightTranslation = MirrorTranslation(LeftTranslation);
             RightRotation = MirrorRotation(LeftRotation);
@@ -108,7 +94,12 @@ namespace Claws
                  */
                 if (controller.IndexOf(@"Oculus Rift", StringComparison.InvariantCultureIgnoreCase) >= 0)
                     return VRControllerType.Touch;
-
+                /*
+                 * Known Oculus Store controller names:
+                 *   Oculus Touch Controller
+                 */
+                if (controller.IndexOf(@"Oculus Touch", StringComparison.InvariantCultureIgnoreCase) >=0)
+                    return VRControllerType.OculusStoreTouch;
                 /*
                  * Known WMR controller names:
                  *   WindowsMR: 0x045e/0x065b/0/2
@@ -123,6 +114,9 @@ namespace Claws
                  */
                 if (controller.IndexOf(@"Knuckles", StringComparison.InvariantCultureIgnoreCase) >= 0)
                     return VRControllerType.Knuckles;
+
+                Plugin.Log.Error("Discovering controller: " + controller.ToString() + "failed! please open an issue with this log statement"
+                    );
             }
 
             return VRControllerType.Unknown;
