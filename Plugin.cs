@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 [assembly: AssemblyTitle("Claws")]
 [assembly: AssemblyFileVersion("1.0.0")]
@@ -25,6 +26,7 @@ namespace Claws
 
         public static readonly string Name = Assembly.GetCustomAttribute<AssemblyTitleAttribute>()?.Title;
         public static readonly string Version = Assembly.GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version;
+        internal static readonly string ClawsSaberPath = Path.Combine(Environment.CurrentDirectory, "CustomSabers", "Claws.saber");
 
 
         /// <summary>

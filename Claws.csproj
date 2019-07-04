@@ -39,6 +39,9 @@
       <HintPath>TargetReferences\ModDependencies\BeatSaberCustomUI\BeatSaberCustomUI.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="CustomSaber">
+      <HintPath>TargetReferences\ModDependencies\CustomSaber\CustomSaber.dll</HintPath>
+    </Reference>
     <Reference Include="IPA.Loader">
       <HintPath>TargetReferences\IPA.Loader.dll</HintPath>
       <Private>False</Private>

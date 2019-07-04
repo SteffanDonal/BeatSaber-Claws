@@ -9,7 +9,7 @@ namespace Claws
     {
         readonly SaberGrip _saberGrip = new SaberGrip();
         readonly SaberLength _saberLength = new SaberLength();
-
+        string LastSelectedSaber;
         ToggleOption _gamemodeToggle;
 
         internal Gamemode()
@@ -62,7 +62,26 @@ namespace Claws
         {
             Plugin.IsEnabled = isEnabled;
 
+            SwitchSaber();
             UpdateCapability();
+        }
+
+        void SwitchSaber()
+        {
+            if (Plugin.IsEnabled)
+            {
+                Plugin.Log.Info("switching sabers from" + CustomSaber.Plugin._currentSaberPath + "to Claws! ");
+                LastSelectedSaber = CustomSaber.Plugin._currentSaberPath;
+                CustomSaber.Plugin._currentSaberPath = Plugin.ClawsSaberPath;
+            }
+            else if (!string.IsNullOrEmpty(LastSelectedSaber))
+            {
+                Plugin.Log.Info("Switching back to previously selected saber" + LastSelectedSaber + "from Claws!");
+                CustomSaber.Plugin._currentSaberPath = LastSelectedSaber;
+            }
+            else
+                Plugin.Log.Error("No saber found previously!");
+                
         }
 
         void UpdateCapability()
