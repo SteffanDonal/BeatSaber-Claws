@@ -32,10 +32,7 @@ namespace Claws
             _saberGrip.ApplyToGameCore(gameCore);
             _saberLength.ApplyToGameCore(gameCore);
 
-            if (Plugin.IsEnabled)
-            {
-                _saberLength.SetLength(Preferences.Length);
-            }
+            UpdateLength();
         }
 
         void OnMenuLoaded()
@@ -63,7 +60,16 @@ namespace Claws
             Plugin.IsEnabled = isEnabled;
 
             SwitchSaber();
+            UpdateLength();
             UpdateCapability();
+        }
+
+        void UpdateLength()
+        {
+            if(Plugin.IsEnabled)
+               _saberLength.SetLength(Preferences.Length);
+            else
+                _saberLength.SetLength(1.0f);
         }
 
         void SwitchSaber()
@@ -81,7 +87,6 @@ namespace Claws
             }
             else
                 Plugin.Log.Error("No saber found previously!");
-                
         }
 
         void UpdateCapability()
