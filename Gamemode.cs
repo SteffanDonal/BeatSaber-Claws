@@ -69,7 +69,7 @@ namespace Claws
             if(Plugin.IsEnabled)
                _saberLength.SetLength(Preferences.Length);
             else
-                _saberLength.SetLength(1.0f);
+               _saberLength.SetLength(1.0f);
         }
 
         void SwitchSaber()
