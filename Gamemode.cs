@@ -75,18 +75,14 @@ namespace Claws
         void SwitchSaber()
         {
             if (Plugin.IsEnabled)
-            {
+            { 
                 Plugin.Log.Info("switching sabers from" + CustomSaber.Plugin._currentSaberPath + "to Claws! ");
                 LastSelectedSaber = CustomSaber.Plugin._currentSaberPath;
                 CustomSaber.Plugin._currentSaberPath = Plugin.ClawsSaberPath;
             }
-            else if (!string.IsNullOrEmpty(LastSelectedSaber))
-            {
-                Plugin.Log.Info("Switching back to previously selected saber" + LastSelectedSaber + "from Claws!");
-                CustomSaber.Plugin._currentSaberPath = LastSelectedSaber;
-            }
-            else
-                Plugin.Log.Error("No saber found previously!");
+            else if (!string.IsNullOrEmpty(LastSelectedSaber) &&                  // If we have the previous saber
+                Plugin.ClawsSaberPath == CustomSaber.Plugin._currentSaberPath)    // And we're the owners of the state (Claws is selected)
+                    CustomSaber.Plugin._currentSaberPath = LastSelectedSaber;     // Change the saber back
         }
 
         void UpdateCapability()
