@@ -43,9 +43,8 @@
       <HintPath>TargetReferences\IPA.Loader.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="SongCore, Version=2.0.9.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>TargetReferences\SongCore.dll</HintPath>
+    <Reference Include="SongCore">
+      <HintPath>TargetReferences\ModDependencies\SongCore\SongCore.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System">
