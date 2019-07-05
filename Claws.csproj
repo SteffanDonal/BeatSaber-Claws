@@ -41,6 +41,7 @@
     </Reference>
     <Reference Include="CustomSaber">
       <HintPath>TargetReferences\ModDependencies\CustomSaber\CustomSaber.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="IPA.Loader">
       <HintPath>TargetReferences\IPA.Loader.dll</HintPath>

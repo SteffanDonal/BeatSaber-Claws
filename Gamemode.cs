@@ -9,7 +9,7 @@ namespace Claws
     {
         readonly SaberGrip _saberGrip = new SaberGrip();
         readonly SaberLength _saberLength = new SaberLength();
-        string LastSelectedSaber;
+        string _lastSelectedSaber;
         ToggleOption _gamemodeToggle;
 
         internal Gamemode()
@@ -66,23 +66,30 @@ namespace Claws
 
         void UpdateLength()
         {
-            if(Plugin.IsEnabled)
-               _saberLength.SetLength(Preferences.Length);
+            if (Plugin.IsEnabled)
+                _saberLength.SetLength(Preferences.Length);
             else
-               _saberLength.SetLength(1.0f);
+                _saberLength.SetLength(1.0f);
         }
 
         void SwitchSaber()
         {
             if (Plugin.IsEnabled)
-            { 
-                Plugin.Log.Info("switching sabers from" + CustomSaber.Plugin._currentSaberPath + "to Claws! ");
-                LastSelectedSaber = CustomSaber.Plugin._currentSaberPath;
+            {
+                Plugin.Log.Info("Switching sabers from '" + CustomSaber.Plugin._currentSaberPath + "' to Claws! ");
+
+                _lastSelectedSaber = CustomSaber.Plugin._currentSaberPath;
                 CustomSaber.Plugin._currentSaberPath = Plugin.ClawsSaberPath;
             }
-            else if (!string.IsNullOrEmpty(LastSelectedSaber) &&                  // If we have the previous saber
-                Plugin.ClawsSaberPath == CustomSaber.Plugin._currentSaberPath)    // And we're the owners of the state (Claws is selected)
-                    CustomSaber.Plugin._currentSaberPath = LastSelectedSaber;     // Change the saber back
+            else
+            {
+                if (string.IsNullOrEmpty(_lastSelectedSaber)) return; // Don't reset to nothing.
+                if (CustomSaber.Plugin._currentSaberPath != Plugin.ClawsSaberPath) return; // Don't reset unless it's our saber.
+
+                Plugin.Log.Info("Switching sabers back to '" + _lastSelectedSaber + "' from Claws! ");
+
+                CustomSaber.Plugin._currentSaberPath = _lastSelectedSaber;
+            }
         }
 
         void UpdateCapability()

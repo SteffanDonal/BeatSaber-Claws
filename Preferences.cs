@@ -1,5 +1,4 @@
-﻿using IPA.Config;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -98,7 +97,7 @@ namespace Claws
                  * Known Oculus Store controller names:
                  *   Oculus Touch Controller
                  */
-                if (controller.IndexOf(@"Oculus Touch", StringComparison.InvariantCultureIgnoreCase) >=0)
+                if (controller.IndexOf(@"Oculus Touch", StringComparison.InvariantCultureIgnoreCase) >= 0)
                     return VRControllerType.OculusStoreTouch;
                 /*
                  * Known WMR controller names:
@@ -115,8 +114,7 @@ namespace Claws
                 if (controller.IndexOf(@"Knuckles", StringComparison.InvariantCultureIgnoreCase) >= 0)
                     return VRControllerType.Knuckles;
 
-                Plugin.Log.Error("Discovering controller: " + controller.ToString() + "failed! please open an issue with this log statement"
-                    );
+                Plugin.Log.Error("Discovering controller: " + controller + " failed! Please open an issue with this log statement.");
             }
 
             return VRControllerType.Unknown;

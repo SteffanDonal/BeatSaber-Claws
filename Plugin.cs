@@ -1,12 +1,12 @@
 ﻿using Harmony;
 using IPA;
-using IPALogger = IPA.Logging.Logger;
 using System;
+using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.IO;
+using IPALogger = IPA.Logging.Logger;
 
 [assembly: AssemblyTitle("Claws")]
 [assembly: AssemblyFileVersion("1.0.0")]
@@ -137,9 +137,9 @@ namespace Claws
         }
 
 
-    #region Unused IPlugin Members
+        #region Unused IPlugin Members
 
-    void IBeatSaberPlugin.OnUpdate() { }
+        void IBeatSaberPlugin.OnUpdate() { }
         void IBeatSaberPlugin.OnFixedUpdate() { }
         void IBeatSaberPlugin.OnActiveSceneChanged(Scene from, Scene to) { }
         void IBeatSaberPlugin.OnSceneLoaded(Scene scene, LoadSceneMode mode) { }
