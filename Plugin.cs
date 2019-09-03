@@ -26,7 +26,7 @@ namespace Claws
 
         public static readonly string Name = Assembly.GetCustomAttribute<AssemblyTitleAttribute>()?.Title;
         public static readonly string Version = Assembly.GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version;
-        internal static readonly string ClawsSaberPath = Path.Combine(Environment.CurrentDirectory, "CustomSabers", "Claws.saber");
+        internal static readonly string ClawsSaberName = "Claws";
 
 
         /// <summary>

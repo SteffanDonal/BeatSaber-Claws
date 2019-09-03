@@ -76,19 +76,19 @@ namespace Claws
         {
             if (Plugin.IsEnabled)
             {
-                Plugin.Log.Info("Switching sabers from '" + CustomSaber.Plugin._currentSaberPath + "' to Claws! ");
+                Plugin.Log.Info("Switching sabers from '" + CustomSaber.Plugin._currentSaberName + "' to Claws! ");
 
-                _lastSelectedSaber = CustomSaber.Plugin._currentSaberPath;
-                CustomSaber.Plugin._currentSaberPath = Plugin.ClawsSaberPath;
+                _lastSelectedSaber = CustomSaber.Plugin._currentSaberName;
+                CustomSaber.Plugin._currentSaberName = Plugin.ClawsSaberName;
             }
             else
             {
                 if (string.IsNullOrEmpty(_lastSelectedSaber)) return; // Don't reset to nothing.
-                if (CustomSaber.Plugin._currentSaberPath != Plugin.ClawsSaberPath) return; // Don't reset unless it's our saber.
+                if (CustomSaber.Plugin._currentSaberName != Plugin.ClawsSaberName) return; // Don't reset unless it's our saber.
 
                 Plugin.Log.Info("Switching sabers back to '" + _lastSelectedSaber + "' from Claws! ");
 
-                CustomSaber.Plugin._currentSaberPath = _lastSelectedSaber;
+                CustomSaber.Plugin._currentSaberName = _lastSelectedSaber;
             }
         }
 
