@@ -57,7 +57,7 @@ namespace Claws
 
         void OnGamemodeToggled(bool isEnabled)
         {
-            Plugin.IsEnabled = isEnabled;
+            Preferences.IsEnabled = isEnabled;
 
             SwitchSaber();
             UpdateLength();

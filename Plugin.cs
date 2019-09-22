@@ -1,7 +1,6 @@
 ﻿using Harmony;
 using IPA;
 using System;
-using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using UnityEngine;
@@ -18,8 +17,6 @@ namespace Claws
 {
     public class Plugin : IBeatSaberPlugin
     {
-        const string IsEnabledPreference = @"Claws.Plugin.IsEnabled";
-
         internal const string CapabilityName = @"Claws";
 
         static Assembly Assembly { get; } = Assembly.GetExecutingAssembly();
@@ -32,7 +29,7 @@ namespace Claws
         /// <summary>
         /// True if the mod is enabled in-game.
         /// </summary>
-        public static bool IsEnabled { get; internal set; }
+        public static bool IsEnabled => Preferences.IsEnabled;
 
 
         static bool _isInitialized;
@@ -71,7 +68,7 @@ namespace Claws
 
             LoadIcon();
 
-            RestorePlayerPrefs();
+            Preferences.Restore();
             Preferences.Invalidate();
 
             _gamemode = new Gamemode();
@@ -81,27 +78,7 @@ namespace Claws
 
         void IBeatSaberPlugin.OnApplicationQuit()
         {
-            StorePlayerPrefs();
-        }
-
-
-        static void StorePlayerPrefs()
-        {
-            Log.Info("Storing plugin preferences...");
-
-            PlayerPrefs.SetInt(IsEnabledPreference, IsEnabled ? 1 : 0);
-            PlayerPrefs.Save();
-
-            Log.Info("Stored!");
-        }
-        static void RestorePlayerPrefs()
-        {
-            Log.Info("Loading plugin preferences...");
-
-            IsEnabled = PlayerPrefs.GetInt(IsEnabledPreference, 0) != 0;
-
-            var pluginState = IsEnabled ? "enabled" : "disabled";
-            Log.Info($"Loaded! Plugin is {pluginState}.");
+            Preferences.Store();
         }
 
         static void LoadIcon()

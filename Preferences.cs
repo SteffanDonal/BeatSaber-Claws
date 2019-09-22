@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.XR;
@@ -19,11 +18,11 @@ namespace Claws
 
     internal static class Preferences
     {
-        const string PrefsSection = "Claws";
-        const string TranslationKey = "Translation";
-        const string RotationKey = "Rotation";
+        const string IsEnabledPreference = @"Claws.Plugin.IsEnabled";
 
         public const float Length = 0.3f;
+
+        public static bool IsEnabled { get; internal set; }
 
         public static Vector3 LeftTranslation { get; private set; }
         public static Vector3 LeftRotation { get; private set; }
@@ -48,9 +47,28 @@ namespace Claws
             { VRControllerType.OculusStoreTouch, new Vector3(25f, 0f, 90f) }
         };
 
+        public static void Store()
+        {
+            Plugin.Log.Info("Storing plugin preferences...");
+
+            PlayerPrefs.SetInt(IsEnabledPreference, IsEnabled ? 1 : 0);
+            PlayerPrefs.Save();
+
+            Plugin.Log.Info("Stored!");
+        }
+
+        public static void Restore()
+        {
+            Plugin.Log.Info("Loading plugin preferences...");
+
+            IsEnabled = PlayerPrefs.GetInt(IsEnabledPreference, 0) != 0;
+
+            var pluginState = Plugin.IsEnabled ? "enabled" : "disabled";
+            Plugin.Log.Info($"Loaded! Plugin is {pluginState}.");
+        }
+
         public static void Invalidate()
         {
-
             LeftTranslation = Vector3.zero;
             LeftRotation = Vector3.zero;
             var controllerType = GetActiveControllersType();
@@ -75,7 +93,7 @@ namespace Claws
             var controllers = nodeStates
                 .Where(node => node.nodeType == XRNode.LeftHand || node.nodeType == XRNode.RightHand)
                 .Select(node => InputTracking.GetNodeName(node.uniqueID))
-                .Where(controller => !string.IsNullOrWhiteSpace(controller));
+                .Where(controller => !String.IsNullOrWhiteSpace(controller));
 
             foreach (var controller in controllers)
             {
@@ -122,35 +140,5 @@ namespace Claws
 
         static Vector3 MirrorTranslation(Vector3 translation) => new Vector3(-translation.x, translation.y, translation.z);
         static Vector3 MirrorRotation(Vector3 rotation) => new Vector3(rotation.x, -rotation.y, -rotation.z);
-
-        static Vector3 ParseVector3(string serialized)
-        {
-            var components = serialized.Trim().Split(',');
-            var parsedVector = Vector3.zero;
-
-            if (components.Length != 3) return parsedVector;
-
-            TryParseInvariantFloat(components[0], out parsedVector.x);
-            TryParseInvariantFloat(components[1], out parsedVector.y);
-            TryParseInvariantFloat(components[2], out parsedVector.z);
-
-            return parsedVector;
-        }
-
-        /// <summary>
-        /// Tries to parse a float using invariant culture.
-        /// </summary>
-        /// <param name="number">The string containing the float to parse.</param>
-        /// <param name="result">The parsed float, if successful.</param>
-        /// <returns>True on success, false on failure.</returns>
-        static bool TryParseInvariantFloat(string number, out float result)
-        {
-            return float.TryParse(
-                number,
-                NumberStyles.Float,
-                CultureInfo.InvariantCulture,
-                out result
-            );
-        }
     }
 }
