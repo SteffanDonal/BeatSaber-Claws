@@ -2,6 +2,8 @@
 
 Custom mod for Beat Saber that shortens sabers from 100cm to 30cm.
 
+Thanks to [ragesaq](https://twitch.tv/ragesaq) for giving me the original mod and idea for this gamemode!
+
 ## How to Play
 
 1. [Install this mod](https://www.modsaber.org/mod/claws).
