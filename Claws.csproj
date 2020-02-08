@@ -99,4 +99,8 @@
     <EmbeddedResource Include="Views\GamemodeSettings.bsml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>mkdir "$(ProjectDir)bin\CustomSabers"
+copy "$(ProjectDir)Claws.saber" "$(ProjectDir)bin\CustomSabers"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
