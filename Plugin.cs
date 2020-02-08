@@ -3,7 +3,6 @@ using IPA;
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 using IPALogger = IPA.Logging.Logger;
 
@@ -18,12 +17,13 @@ namespace Claws
     public class Plugin : IBeatSaberPlugin
     {
         internal const string CapabilityName = @"Claws";
+        internal const string ClawsSaberName = "Claws.saber";
+        internal const string DefaultSaberName = "DefaultSabers";
 
         static Assembly Assembly { get; } = Assembly.GetExecutingAssembly();
 
         public static readonly string Name = Assembly.GetCustomAttribute<AssemblyTitleAttribute>()?.Title;
         public static readonly string Version = Assembly.GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version;
-        internal static readonly string ClawsSaberName = "Claws";
 
 
         /// <summary>
@@ -31,17 +31,14 @@ namespace Claws
         /// </summary>
         public static bool IsEnabled => Preferences.IsEnabled;
 
+        public static IPALogger Log { get; internal set; }
+
 
         static bool _isInitialized;
 
         static Gamemode _gamemode;
 
-        internal static Sprite IconSprite { get; private set; }
-
-        static Texture2D _iconTexture;
-        public static IPALogger Log { get; internal set; }
-
-        public void Init(object thisIsNull, IPALogger log)
+        public void Init(object _, IPALogger log)
         {
             Log = log;
         }
@@ -66,8 +63,6 @@ namespace Claws
                 return;
             }
 
-            LoadIcon();
-
             Preferences.Restore();
             Preferences.Invalidate();
 
@@ -79,38 +74,6 @@ namespace Claws
         void IBeatSaberPlugin.OnApplicationQuit()
         {
             Preferences.Store();
-        }
-
-        static void LoadIcon()
-        {
-            _iconTexture = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-            _iconTexture.LoadImage(LoadResource("GamemodeIcon.png"));
-
-            IconSprite = Sprite.Create(
-                _iconTexture,
-                new Rect(0, 0, _iconTexture.width, _iconTexture.height),
-                Vector2.one * 0.5f
-            );
-        }
-
-        internal static byte[] LoadResource(string resourceName)
-        {
-            resourceName = @"Claws.Resources." + resourceName;
-
-            Log.Info($"Loading embedded resource: {resourceName}");
-
-            using (var resourceStream = Assembly.GetManifestResourceStream(resourceName))
-            {
-                if (resourceStream == null) return null;
-
-                var resource = new byte[resourceStream.Length];
-
-                resourceStream.Read(resource, 0, resource.Length);
-
-                Log.Info($"Loaded {resourceName}");
-
-                return resource;
-            }
         }
 
 

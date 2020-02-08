@@ -1,0 +1,3 @@
+﻿<modifier-container xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
+  <modifier text='Enable Claws' hover-hint='Changes the hitboxes to 30cm, your sabers, and grip.' src='Claws.Resources.GamemodeIcon.png' value='isEnabled' apply-on-change='true' />
+</modifier-container>

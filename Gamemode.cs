@@ -1,7 +1,9 @@
-﻿using Claws.Modifiers;
-using CustomUI.GameplaySettings;
+﻿using System;
+using Claws.Modifiers;
+using Claws.Views;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using BeatSaberMarkupLanguage.GameplaySetup;
 
 namespace Claws
 {
@@ -9,8 +11,22 @@ namespace Claws
     {
         readonly SaberGrip _saberGrip = new SaberGrip();
         readonly SaberLength _saberLength = new SaberLength();
-        string _lastSelectedSaber;
-        ToggleOption _gamemodeToggle;
+        GamemodeSettingsViewController _gamemodeSettingsView;
+
+        string CurrentCustomSaber
+        {
+            get => CustomSaber.Settings.Configuration.CurrentlySelectedSaber;
+            set
+            {
+                var sabers = CustomSaber.Utilities.SaberAssetLoader.CustomSabers.ToList();
+                var saberIndex = sabers.FindIndex(saber => saber.FileName.Equals(value, StringComparison.InvariantCultureIgnoreCase));
+
+                if (saberIndex != -1)
+                    typeof(CustomSaber.Utilities.SaberAssetLoader).SetStaticMember("SelectedSaber", saberIndex);
+
+                typeof(CustomSaber.Settings.Configuration).SetStaticMember("CurrentlySelectedSaber", value);
+            }
+        }
 
         internal Gamemode()
         {
@@ -37,28 +53,20 @@ namespace Claws
 
         void OnMenuLoaded()
         {
-            if (_gamemodeToggle != null)
-            {
-                _gamemodeToggle.OnToggle -= OnGamemodeToggled;
-            }
+            _gamemodeSettingsView = new GamemodeSettingsViewController();
+            _gamemodeSettingsView.IsEnabledChanged += OnGamemodeToggled;
 
-            _gamemodeToggle = GameplaySettingsUI.CreateToggleOption(
-                GameplaySettingsPanels.ModifiersLeft,
-                "Claws Mode",
-                hintText: "Shortens saber hitboxes to 0.3m, and adjusts grip.",
-                optionIcon: Plugin.IconSprite
+            GameplaySetup.instance.AddTab(
+                "Claws",
+                GamemodeSettingsViewController.Resource,
+                _gamemodeSettingsView
             );
-
-            _gamemodeToggle.GetValue = Plugin.IsEnabled;
-            _gamemodeToggle.OnToggle += OnGamemodeToggled;
 
             UpdateCapability();
         }
 
-        void OnGamemodeToggled(bool isEnabled)
+        void OnGamemodeToggled(object sender, EventArgs e)
         {
-            Preferences.IsEnabled = isEnabled;
-
             SwitchSaber();
             UpdateLength();
             UpdateCapability();
@@ -76,19 +84,22 @@ namespace Claws
         {
             if (Plugin.IsEnabled)
             {
-                Plugin.Log.Info("Switching sabers from '" + CustomSaber.Plugin._currentSaberName + "' to Claws! ");
+                Plugin.Log.Info($"Switching sabers from '{CurrentCustomSaber}' to {Plugin.ClawsSaberName}!");
 
-                _lastSelectedSaber = CustomSaber.Plugin._currentSaberName;
-                CustomSaber.Plugin._currentSaberName = Plugin.ClawsSaberName;
+                Preferences.LastCustomSaber = CurrentCustomSaber;
+                CurrentCustomSaber = Plugin.ClawsSaberName;
             }
             else
             {
-                if (string.IsNullOrEmpty(_lastSelectedSaber)) return; // Don't reset to nothing.
-                if (CustomSaber.Plugin._currentSaberName != Plugin.ClawsSaberName) return; // Don't reset unless it's our saber.
+                if (CurrentCustomSaber != Plugin.ClawsSaberName) return; // Don't reset unless it's our saber.
 
-                Plugin.Log.Info("Switching sabers back to '" + _lastSelectedSaber + "' from Claws! ");
+                var lastSaber = !string.IsNullOrEmpty(Preferences.LastCustomSaber)
+                    ? Preferences.LastCustomSaber
+                    : Plugin.DefaultSaberName;
 
-                CustomSaber.Plugin._currentSaberName = _lastSelectedSaber;
+                Plugin.Log.Info($"Switching sabers back to '{lastSaber}' from {Plugin.ClawsSaberName}!");
+
+                CurrentCustomSaber = lastSaber;
             }
         }
 
@@ -96,7 +107,6 @@ namespace Claws
         {
             if (Plugin.IsEnabled)
                 SongCore.Collections.RegisterCapability(Plugin.CapabilityName);
-
             else
                 SongCore.Collections.DeregisterizeCapability(Plugin.CapabilityName);
         }

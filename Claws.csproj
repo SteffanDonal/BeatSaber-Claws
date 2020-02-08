@@ -31,20 +31,28 @@
       <HintPath>TargetReferences\ModDependencies\Harmony\0Harmony.1.2.0.1.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>TargetReferences\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="BeatSaberCustomUI">
-      <HintPath>TargetReferences\ModDependencies\BeatSaberCustomUI\BeatSaberCustomUI.dll</HintPath>
+    <Reference Include="BSML">
+      <HintPath>TargetReferences\ModDependencies\BSML\BSML.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CustomSaber">
       <HintPath>TargetReferences\ModDependencies\CustomSaber\CustomSaber.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="HMLib">
+      <HintPath>TargetReferences\HMLib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HMUI">
+      <HintPath>TargetReferences\HMUI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="IPA.Loader">
       <HintPath>TargetReferences\IPA.Loader.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MainAssembly">
+      <HintPath>TargetReferences\MainAssembly.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SongCore">
@@ -78,12 +86,17 @@
     <Compile Include="Plugin.cs" />
     <Compile Include="Preferences.cs" />
     <Compile Include="ReflectionUtility.cs" />
+    <Compile Include="Views\GamemodeSettingsViewController.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\GamemodeIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="manifest.json" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Views\GamemodeSettings.bsml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
