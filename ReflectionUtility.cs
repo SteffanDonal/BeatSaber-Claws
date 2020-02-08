@@ -5,24 +5,59 @@ namespace Claws
 {
     internal static class ReflectionUtility
     {
-        public static void SetPrivateField(this object target, string fieldName, object value)
+        public static void SetPrivateMember(this object target, string memberName, object value)
         {
-            var field = target.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
-            field.SetValue(target, value);
+            var type = target.GetType();
+
+            FieldInfo targetField;
+            if ((targetField = type.GetField(memberName, BindingFlags.Instance | BindingFlags.NonPublic)) != null)
+            {
+                targetField.SetValue(target, value);
+                return;
+            }
+
+            PropertyInfo targetProperty;
+            if ((targetProperty = type.GetProperty(memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)) != null)
+            {
+                targetProperty.SetValue(target, value);
+                return;
+            }
         }
 
-        public static T GetPrivateField<T>(this object target, string fieldName)
+        public static void SetStaticMember(this Type type, string memberName, object value)
         {
-            var field = target.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
-            var value = field.GetValue(target);
-            return (T)value;
+            FieldInfo targetField;
+            if ((targetField = type.GetField(memberName, BindingFlags.Static | BindingFlags.NonPublic)) != null)
+            {
+                targetField.SetValue(null, value);
+                return;
+            }
+
+            PropertyInfo targetProperty;
+            if ((targetProperty = type.GetProperty(memberName, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)) != null)
+            {
+                targetProperty.SetValue(null, value);
+                return;
+            }
         }
 
-        public static object GetPrivateField(Type targetType, object targetInstance, string fieldName)
+        public static T GetPrivateField<T>(this object target, string memberName)
         {
-            var field = targetInstance.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
-            var value = field.GetValue(targetInstance);
-            return value;
+            var type = target.GetType();
+
+            FieldInfo targetField;
+            if ((targetField = type.GetField(memberName, BindingFlags.Instance | BindingFlags.NonPublic)) != null)
+            {
+                return (T)targetField.GetValue(target);
+            }
+
+            PropertyInfo targetProperty;
+            if ((targetProperty = type.GetProperty(memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)) != null)
+            {
+                return (T)targetProperty.GetValue(target);
+            }
+
+            return default;
         }
 
         public static void InvokePrivateMethod(this object target, string methodName, object[] methodParams)

@@ -90,7 +90,7 @@ namespace Claws.Modifiers
             }
             else
             {
-                __instance.SetPrivateField("_lastTrackedPosition", localPosition);
+                __instance.SetPrivateMember("_lastTrackedPosition", localPosition);
             }
 
             __instance.transform.localPosition = localPosition;
