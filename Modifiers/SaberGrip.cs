@@ -43,14 +43,14 @@ namespace Claws.Modifiers
     }
 
     [HarmonyPatch(typeof(VRController))]
-    [HarmonyPatch("UpdatePositionAndRotation")]
+    [HarmonyPatch("Update")]
     class SaberGripVRControllerPatch
     {
-        static bool Prefix(VRController __instance)
+        static void Postfix(VRController __instance)
         {
-            if (!Plugin.IsEnabled) return true;
+            if (!Plugin.IsEnabled) return;
             if (!ReferenceEquals(__instance, SaberGrip.LeftSaber) &&
-                !ReferenceEquals(__instance, SaberGrip.RightSaber)) return true;
+                !ReferenceEquals(__instance, SaberGrip.RightSaber)) return;
 
             Vector3 translation;
             Vector3 rotation;
@@ -66,42 +66,8 @@ namespace Claws.Modifiers
                 rotation = Preferences.RightRotation;
             }
 
-            // Begin Default Behaviour
-
-            var node = __instance.GetPrivateField<XRNode>("_node");
-            var lastTrackedPosition = __instance.GetPrivateField<Vector3>("_lastTrackedPosition");
-
-            var localPosition = InputTracking.GetLocalPosition(node);
-            var localRotation = InputTracking.GetLocalRotation(node);
-            if (localPosition == Vector3.zero)
-            {
-                if (lastTrackedPosition != Vector3.zero)
-                {
-                    localPosition = lastTrackedPosition;
-                }
-                else if (node == XRNode.LeftHand)
-                {
-                    localPosition = new Vector3(-0.2f, 0.05f, 0f);
-                }
-                else if (node == XRNode.RightHand)
-                {
-                    localPosition = new Vector3(0.2f, 0.05f, 0f);
-                }
-            }
-            else
-            {
-                __instance.SetPrivateMember("_lastTrackedPosition", localPosition);
-            }
-
-            __instance.transform.localPosition = localPosition;
-            __instance.transform.localRotation = localRotation;
-
-            // End Default Behaviour
-
             __instance.transform.Translate(translation);
             __instance.transform.Rotate(rotation);
-
-            return false;
         }
     }
 }

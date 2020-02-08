@@ -58,7 +58,7 @@ namespace Claws.Modifiers
 
             saberTop.localPosition = new Vector3(saberTop.localPosition.x, saberTop.localPosition.y, saberBottom.localPosition.z + length);
 
-            var trail = Resources.FindObjectsOfTypeAll<GameCoreInstaller>().FirstOrDefault()
+            var trail = Resources.FindObjectsOfTypeAll<GameCoreSceneSetup>().FirstOrDefault()
                 ?.GetPrivateField<BasicSaberModelController>("_basicSaberModelControllerPrefab")
                 ?.GetPrivateField<SaberWeaponTrail>("_saberWeaponTrail");
 
