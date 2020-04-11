@@ -1,9 +1,8 @@
-﻿using Harmony;
+﻿using HarmonyLib;
 using IPA;
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using UnityEngine.SceneManagement;
 using IPALogger = IPA.Logging.Logger;
 
 [assembly: AssemblyTitle("Claws")]
@@ -14,7 +13,8 @@ using IPALogger = IPA.Logging.Logger;
 
 namespace Claws
 {
-    public class Plugin : IBeatSaberPlugin
+    [Plugin(RuntimeOptions.SingleStartInit)]
+    public class Plugin
     {
         internal const string CapabilityName = @"Claws";
         internal const string ClawsSaberName = "Claws.saber";
@@ -38,21 +38,23 @@ namespace Claws
 
         static Gamemode _gamemode;
 
+        [Init]
         public void Init(object _, IPALogger log)
         {
             Log = log;
         }
 
-        void IBeatSaberPlugin.OnApplicationStart()
+        [OnStart]
+        public void OnStart()
         {
             if (_isInitialized)
-                throw new InvalidOperationException($"Plugin had {nameof(IBeatSaberPlugin.OnApplicationStart)} called more than once! Critical failure.");
+                throw new InvalidOperationException($"Plugin had {nameof(OnStart)} called more than once! Critical failure.");
 
             _isInitialized = true;
 
             try
             {
-                var harmony = HarmonyInstance.Create("com.github.steffandonal.claws");
+                var harmony = new Harmony("com.github.steffandonal.claws");
                 harmony.PatchAll(Assembly);
             }
             catch (Exception e)
@@ -71,20 +73,10 @@ namespace Claws
             Log.Info($"v{Version} loaded!");
         }
 
-        void IBeatSaberPlugin.OnApplicationQuit()
+        [OnExit]
+        public void OnExit()
         {
             Preferences.Store();
         }
-
-
-        #region Unused IPlugin Members
-
-        void IBeatSaberPlugin.OnUpdate() { }
-        void IBeatSaberPlugin.OnFixedUpdate() { }
-        void IBeatSaberPlugin.OnActiveSceneChanged(Scene from, Scene to) { }
-        void IBeatSaberPlugin.OnSceneLoaded(Scene scene, LoadSceneMode mode) { }
-        void IBeatSaberPlugin.OnSceneUnloaded(Scene scene) { }
-
-        #endregion
     }
 }

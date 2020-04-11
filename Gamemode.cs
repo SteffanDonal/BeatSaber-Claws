@@ -1,9 +1,9 @@
-﻿using System;
+﻿using BeatSaberMarkupLanguage.GameplaySetup;
 using Claws.Modifiers;
 using Claws.Views;
+using System;
 using System.Linq;
 using UnityEngine.SceneManagement;
-using BeatSaberMarkupLanguage.GameplaySetup;
 
 namespace Claws
 {

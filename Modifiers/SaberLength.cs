@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using UnityEngine;
+using Xft;
 
 namespace Claws.Modifiers
 {
@@ -60,7 +61,7 @@ namespace Claws.Modifiers
 
             var trail = Resources.FindObjectsOfTypeAll<GameCoreSceneSetup>().FirstOrDefault()
                 ?.GetPrivateField<BasicSaberModelController>("_basicSaberModelControllerPrefab")
-                ?.GetPrivateField<SaberWeaponTrail>("_saberWeaponTrail");
+                ?.GetPrivateField<XWeaponTrail>("_saberWeaponTrail");
 
             if (trail != null)
             {

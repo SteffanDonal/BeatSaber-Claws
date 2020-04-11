@@ -1,6 +1,5 @@
-﻿using Harmony;
+﻿using HarmonyLib;
 using UnityEngine;
-using UnityEngine.XR;
 
 namespace Claws.Modifiers
 {

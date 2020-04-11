@@ -27,8 +27,8 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony.1.2.0.1">
-      <HintPath>TargetReferences\ModDependencies\Harmony\0Harmony.1.2.0.1.dll</HintPath>
+    <Reference Include="0Harmony">
+      <HintPath>TargetReferences\ModDependencies\Harmony\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="BSML">
@@ -51,8 +51,8 @@
       <HintPath>TargetReferences\IPA.Loader.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="MainAssembly">
-      <HintPath>TargetReferences\MainAssembly.dll</HintPath>
+    <Reference Include="Main">
+      <HintPath>TargetReferences\Main.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SongCore">
