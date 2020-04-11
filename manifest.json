@@ -1,12 +1,12 @@
 ﻿{
   "author": "Ruirize",
   "description": [
-    "Custom gamemode that shortens sabers 70% & alters grip."
+    "Gameplay modifier that shrinks sabers by 70% & alters grip."
   ],
   "gameVersion": "1.9.0",
   "id": "claws",
-  "name": "Claws Mod",
-  "version": "1.2.0",
+  "name": "Claws",
+  "version": "1.2.1",
   "features": [
   ],
   "links": {
