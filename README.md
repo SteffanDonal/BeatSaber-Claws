@@ -6,7 +6,7 @@ Thanks to [ragesaq](https://twitch.tv/ragesaq) for giving me the original mod an
 
 ## How to Play
 
-1. [Install this mod](https://www.modsaber.org/mod/claws).
+1. Install "Claws Mod" using [ModAssistant](https://github.com/Assistant/ModAssistant), or [download the latest version](https://github.com/SteffanDonal/BeatSaber-Claws/releases) and unzip manually.
 2. In the gameplay settings, under mods, find the "Claws" toggle and enable it!
 
 The default saber adjustments that come with Claws are setup for Touch, Rift S, WMR & Index.
