@@ -13,21 +13,6 @@ namespace Claws
         readonly SaberLength _saberLength = new SaberLength();
         GamemodeSettingsViewController _gamemodeSettingsView;
 
-        string CurrentCustomSaber
-        {
-            get => CustomSaber.Settings.Configuration.CurrentlySelectedSaber;
-            set
-            {
-                var sabers = CustomSaber.Utilities.SaberAssetLoader.CustomSabers.ToList();
-                var saberIndex = sabers.FindIndex(saber => saber.FileName.Equals(value, StringComparison.InvariantCultureIgnoreCase));
-
-                if (saberIndex != -1)
-                    typeof(CustomSaber.Utilities.SaberAssetLoader).SetStaticMember("SelectedSaber", saberIndex);
-
-                typeof(CustomSaber.Settings.Configuration).SetStaticMember("CurrentlySelectedSaber", value);
-            }
-        }
-
         internal Gamemode()
         {
             SceneManager.sceneLoaded += OnSceneManagerSceneLoaded;
@@ -80,14 +65,36 @@ namespace Claws
                 _saberLength.SetLength(1.0f);
         }
 
+        static string CurrentCustomSaber => CustomSaber.Settings.Configuration.CurrentlySelectedSaber;
+        static bool TrySetCustomSaber(string saberName)
+        {
+            var sabers = CustomSaber.Utilities.SaberAssetLoader.CustomSabers.ToList();
+            var saberIndex = sabers.FindIndex(saber => saber.FileName.Equals(saberName, StringComparison.InvariantCultureIgnoreCase));
+
+            if (saberIndex == -1)
+                return false;
+
+            typeof(CustomSaber.Utilities.SaberAssetLoader).SetStaticMember("SelectedSaber", saberIndex);
+            typeof(CustomSaber.Settings.Configuration).SetStaticMember("CurrentlySelectedSaber", saberName);
+
+            return true;
+        }
+
         void SwitchSaber()
         {
             if (Plugin.IsEnabled)
             {
-                Plugin.Log.Info($"Switching sabers from '{CurrentCustomSaber}' to {Plugin.ClawsSaberName}!");
+                Plugin.Log.Info($"Switching sabers from '{CurrentCustomSaber}' to '{Plugin.ClawsSaberName}'!");
 
-                Preferences.LastCustomSaber = CurrentCustomSaber;
-                CurrentCustomSaber = Plugin.ClawsSaberName;
+                // If claws are already selected, don't store them in preferences.
+                // this allows the player to manually choose claws, then toggle it
+                // off and it'll go back to whatever they had set before they enabled
+                // claws last. The other option would be to go back to default sabers.
+                if (CurrentCustomSaber != Plugin.ClawsSaberName)
+                    Preferences.LastCustomSaber = CurrentCustomSaber;
+
+                if (!TrySetCustomSaber(Plugin.ClawsSaberName))
+                    Plugin.Log.Error("Failed to change sabers to Claws!");
             }
             else
             {
@@ -97,9 +104,11 @@ namespace Claws
                     ? Preferences.LastCustomSaber
                     : Plugin.DefaultSaberName;
 
-                Plugin.Log.Info($"Switching sabers back to '{lastSaber}' from {Plugin.ClawsSaberName}!");
+                Plugin.Log.Info($"Switching sabers back to '{lastSaber}' from '{Plugin.ClawsSaberName}'!");
 
-                CurrentCustomSaber = lastSaber;
+                if (!TrySetCustomSaber(lastSaber))
+                    if (!TrySetCustomSaber(Plugin.DefaultSaberName))
+                        Plugin.Log.Error("Failed to reset sabers. Couldn't reset back to default either!");
             }
         }
 
