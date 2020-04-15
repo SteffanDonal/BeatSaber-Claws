@@ -11,6 +11,14 @@ Thanks to [ragesaq](https://twitch.tv/ragesaq) for giving me the original mod an
 
 The default saber adjustments that come with Claws are setup for Touch, Rift S, WMR & Index.
 
+### Safety
+
+Claws is hard. Harder than it looks, and it _looks_ hard.
+
+**Please warmup thoroughly before playing Claws**. As someone who has been playing Claws for over 500 hours now, a warmup is _necessary_. Stretch your arms and shoulders, and try not to overuse your elbows or wrists. Take breaks!
+
+Also take extra care not to controller smash 🤣
+
 ## Community
 
 [Join my Discord](http://claws.ruirize.co.uk) to chat & share great Claws maps!
