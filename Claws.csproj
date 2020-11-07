@@ -37,9 +37,11 @@
     </Reference>
     <Reference Include="BS_Utils">
       <HintPath>TargetReferences\ModDependencies\BS_Utils\BS_Utils.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="GameplayCore">
       <HintPath>TargetReferences\GameplayCore.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="HMLib">
       <HintPath>TargetReferences\HMLib.dll</HintPath>
