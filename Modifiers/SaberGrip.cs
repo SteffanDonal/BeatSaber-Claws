@@ -1,72 +1,66 @@
 ﻿using HarmonyLib;
 using UnityEngine;
+using UnityEngine.XR;
 
 namespace Claws.Modifiers
 {
-    internal class SaberGrip
+    internal static class SaberGrip
     {
-        internal static VRController LeftSaber;
-        internal static VRController RightSaber;
+        internal static bool IsInGame { get; set; }
 
-        internal void ApplyToGameCore(GameObject gameCore)
+        internal static void AdjustControllerTransform(
+            IVRPlatformHelper platformHelper,
+            XRNode node, Transform transform
+        )
         {
-            LeftSaber = null;
-            RightSaber = null;
+            if (!Plugin.IsEnabled) return;
+            if (!IsInGame) return;
 
-            Plugin.Log.Info("Setting up grip adjustments...");
-
-            var saberManagerObj = gameCore.transform
-                .Find("Origin")
-                ?.Find("VRGameCore")
-                ?.Find("SaberManager");
-
-            if (saberManagerObj == null)
+            switch (node)
             {
-                Plugin.Log.Critical("Couldn't find SaberManager, bailing!");
-                return;
+                case XRNode.LeftHand:
+                    transform.Translate(Preferences.LeftTranslation);
+                    transform.Rotate(Preferences.LeftRotation);
+                    break;
+
+                case XRNode.RightHand:
+                    transform.Translate(Preferences.RightTranslation);
+                    transform.Rotate(Preferences.RightRotation);
+                    break;
             }
-
-            var saberManager = saberManagerObj.GetComponent<SaberManager>();
-
-            LeftSaber = saberManager.GetPrivateField<Saber>("_leftSaber").GetComponent<VRController>();
-            RightSaber = saberManager.GetPrivateField<Saber>("_rightSaber").GetComponent<VRController>();
-
-            if (LeftSaber is null || RightSaber is null)
-            {
-                Plugin.Log.Critical("Sabers couldn't be found. Bailing!");
-                return;
-            }
-
-            Plugin.Log.Info("Grip adjustments ready!");
         }
     }
 
-    [HarmonyPatch(typeof(VRController))]
-    [HarmonyPatch("Update")]
-    class SaberGripVRControllerPatch
+    [HarmonyPatch(typeof(DevicelessVRHelper))]
+    [HarmonyPatch(nameof(IVRPlatformHelper.AdjustControllerTransform))]
+    class SaberGripDevicelessControllerPatch
     {
-        static void Postfix(VRController __instance)
-        {
-            if (!Plugin.IsEnabled) return;
-            if (!ReferenceEquals(__instance, SaberGrip.LeftSaber) &&
-                !ReferenceEquals(__instance, SaberGrip.RightSaber)) return;
+        static void Postfix(
+            DevicelessVRHelper __instance,
+            XRNode node, Transform transform,
+            Vector3 position, Vector3 rotation
+        ) => SaberGrip.AdjustControllerTransform(__instance, node, transform);
+    }
 
-            Vector3 translation;
-            Vector3 rotation;
+    [HarmonyPatch(typeof(OculusVRHelper))]
+    [HarmonyPatch(nameof(IVRPlatformHelper.AdjustControllerTransform))]
+    class SaberGripOculusControllerPatch
+    {
+        static void Postfix(
+            OculusVRHelper __instance,
+            XRNode node, Transform transform,
+            Vector3 position, Vector3 rotation
+        ) => SaberGrip.AdjustControllerTransform(__instance, node, transform);
+    }
 
-            if (ReferenceEquals(__instance, SaberGrip.LeftSaber))
-            {
-                translation = Preferences.LeftTranslation;
-                rotation = Preferences.LeftRotation;
-            }
-            else
-            {
-                translation = Preferences.RightTranslation;
-                rotation = Preferences.RightRotation;
-            }
-
-            __instance.transform.Translate(translation);
-            __instance.transform.Rotate(rotation);
-        }
+    [HarmonyPatch(typeof(OpenVRHelper))]
+    [HarmonyPatch(nameof(IVRPlatformHelper.AdjustControllerTransform))]
+    class SaberGripOpenVRControllerPatch
+    {
+        static void Postfix(
+            OpenVRHelper __instance,
+            XRNode node, Transform transform,
+            Vector3 position, Vector3 rotation
+        ) => SaberGrip.AdjustControllerTransform(__instance, node, transform);
     }
 }

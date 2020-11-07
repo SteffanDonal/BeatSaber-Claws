@@ -35,9 +35,11 @@
       <HintPath>TargetReferences\ModDependencies\BSML\BSML.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="CustomSaber">
-      <HintPath>TargetReferences\ModDependencies\CustomSaber\CustomSaber.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="BS_Utils">
+      <HintPath>TargetReferences\ModDependencies\BS_Utils\BS_Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="GameplayCore">
+      <HintPath>TargetReferences\GameplayCore.dll</HintPath>
     </Reference>
     <Reference Include="HMLib">
       <HintPath>TargetReferences\HMLib.dll</HintPath>

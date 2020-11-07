@@ -1,75 +1,87 @@
-﻿using System.Linq;
+﻿using HarmonyLib;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
-using Xft;
 
 namespace Claws.Modifiers
 {
-    internal class SaberLength
+    internal static class SaberLength
     {
-        Saber _leftSaber;
-        Saber _rightSaber;
+        static List<WeakReference<SaberModelContainer>> ActiveSabers => new List<WeakReference<SaberModelContainer>>();
 
-        internal void ApplyToGameCore(GameObject gameCore)
+        static float CurrentLength => Plugin.IsEnabled ? Preferences.Length : 1.0f;
+        static bool IsVisible => !Plugin.IsEnabled;
+
+        internal static void TrackSaber(SaberModelContainer saberModelContainer)
         {
-            _leftSaber = null;
-            _rightSaber = null;
-
-            Plugin.Log.Info("Setting up length adjustments...");
-
-            var saberManagerObj = gameCore.transform
-                .Find("Origin")
-                ?.Find("VRGameCore")
-                ?.Find("SaberManager");
-
-            if (saberManagerObj == null)
+            ActiveSabers.Add(new WeakReference<SaberModelContainer>(saberModelContainer));
+            ApplyToSaber(saberModelContainer);
+        }
+        internal static void ApplyToSabers()
+        {
+            for (var i = ActiveSabers.Count - 1; i >= 0; i--)
             {
-                Plugin.Log.Critical("Couldn't find SaberManager, bailing!");
-                return;
+                var weakSaber = ActiveSabers[i];
+                if (!weakSaber.TryGetTarget(out var saberModelContainer))
+                {
+                    ActiveSabers.RemoveAt(i);
+                    continue;
+                }
+
+                ApplyToSaber(saberModelContainer);
             }
-
-            var saberManager = saberManagerObj.GetComponent<SaberManager>();
-
-            _leftSaber = saberManager.GetPrivateField<Saber>("_leftSaber");
-            _rightSaber = saberManager.GetPrivateField<Saber>("_rightSaber");
-
-            if (_leftSaber is null || _rightSaber is null)
-            {
-                Plugin.Log.Critical("Sabers couldn't be found. Bailing!");
-                return;
-            }
-
-            Plugin.Log.Info("Length adjustments ready!");
         }
 
-        internal void SetLength(float length)
+        static void ApplyToSaber(SaberModelContainer saberModelContainer)
         {
-            Plugin.Log.Debug($"Setting sabers length to {length:0.00}m");
+            var saber = saberModelContainer.GetPrivateField<Saber>("_saber");
+            var saberModelController = saberModelContainer.GetComponent<SaberModelController>();
 
-            if (_leftSaber != null)
-                SetSaberLength(_leftSaber, length);
+            var saberTop = saber.GetPrivateField<Transform>("_saberBladeTopTransform");
+            var saberBottom = saber.GetPrivateField<Transform>("_saberBladeBottomTransform");
 
-            if (_rightSaber != null)
-                SetSaberLength(_rightSaber, length);
+            saberTop.localPosition = new Vector3(saberTop.localPosition.x, saberTop.localPosition.y, saberBottom.localPosition.z + CurrentLength);
+
+            // TODO: Remove this dirty renderer hack and implement a custom saber model through DI
+            foreach (var saberRenderer in saberModelContainer.GetComponentsInChildren<MeshRenderer>())
+            {
+                saberRenderer.enabled = IsVisible;
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(SaberModelContainer))]
+    [HarmonyPatch(nameof(SaberModelContainer.Start))]
+    class SaberLengthSaberInitPatch
+    {
+        static void Postfix(SaberModelContainer __instance)
+        {
+            var saber = __instance.GetPrivateField<Saber>("_saber");
+
+            if (!IsValidSaber(saber))
+                return;
+
+            SaberLength.TrackSaber(__instance);
         }
 
-        static void SetSaberLength(Saber saber, float length)
+        static bool IsValidSaber(Saber saber)
         {
-            var saberTop = saber.GetPrivateField<Transform>("_topPos");
-            var saberBottom = saber.GetPrivateField<Transform>("_bottomPos");
+            var currentObject = saber.gameObject;
 
-            saberTop.localPosition = new Vector3(saberTop.localPosition.x, saberTop.localPosition.y, saberBottom.localPosition.z + length);
+            var isMultiplayerSaber = false;
+            var isLocalSaber = false;
 
-            var trail = Resources.FindObjectsOfTypeAll<GameCoreSceneSetup>().FirstOrDefault()
-                ?.GetPrivateField<BasicSaberModelController>("_basicSaberModelControllerPrefab")
-                ?.GetPrivateField<XWeaponTrail>("_saberWeaponTrail");
-
-            if (trail != null)
+            while (currentObject.transform.parent != null)
             {
-                var trailTop = trail.GetPrivateField<Transform>("_pointEnd");
-                var trailBottom = trail.GetPrivateField<Transform>("_pointStart");
+                currentObject = currentObject.transform.parent.gameObject;
 
-                trailTop.localPosition = new Vector3(trailTop.localPosition.x, trailTop.localPosition.y, trailBottom.localPosition.z + length);
+                if (currentObject.name.Contains("LocalPlayerGameCore"))
+                    isLocalSaber = true;
+                else if (currentObject.name.Contains("Multiplayer"))
+                    isMultiplayerSaber = true;
             }
+
+            return !isMultiplayerSaber || isLocalSaber;
         }
     }
 }
