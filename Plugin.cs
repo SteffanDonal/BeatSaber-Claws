@@ -49,7 +49,12 @@ namespace Claws
         {
             Log = log;
 
-            var sabers = AssetBundle.LoadFromStream(Assembly.GetManifestResourceStream(ClawsSaberName)).LoadAsset<GameObject>("_CustomSaber");
+            GameObject sabers;
+
+            using (var stream = Assembly.GetManifestResourceStream(ClawsSaberName))
+            {
+                sabers = AssetBundle.LoadFromStream(stream).LoadAsset<GameObject>("_CustomSaber");
+            }
 
             foreach (Transform t in sabers.transform)
             {
