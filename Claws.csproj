@@ -59,12 +59,22 @@
       <HintPath>TargetReferences\Main.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SiraUtil, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <Private>False</Private>
+      <HintPath>TargetReferences\ModDependencies\SiraUtil\SiraUtil.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="SongCore">
       <HintPath>TargetReferences\ModDependencies\SongCore\SongCore.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System">
       <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <Private>False</Private>
+      <HintPath>TargetReferences\UnityEngine.AssetBundleModule.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>TargetReferences\UnityEngine.CoreModule.dll</HintPath>
@@ -85,8 +95,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Gamemode.cs" />
+    <Compile Include="Installers\SaberModelInstaller.cs" />
     <Compile Include="Modifiers\SaberGrip.cs" />
     <Compile Include="Modifiers\SaberLength.cs" />
+    <Compile Include="Modifiers\ClawsSaberModelProvider.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Preferences.cs" />
     <Compile Include="ReflectionUtility.cs" />
@@ -98,9 +110,11 @@
   <ItemGroup>
     <EmbeddedResource Include="manifest.json" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Views\GamemodeSettings.bsml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Claws.saber" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

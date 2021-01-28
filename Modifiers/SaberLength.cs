@@ -41,12 +41,6 @@ namespace Claws.Modifiers
             var saberBottom = saber.GetPrivateField<Transform>("_saberBladeBottomTransform");
 
             saberTop.localPosition = new Vector3(saberTop.localPosition.x, saberTop.localPosition.y, saberBottom.localPosition.z + CurrentLength);
-
-            // TODO: Remove this dirty renderer hack and implement a custom saber model through DI
-            foreach (var saberRenderer in saberModelContainer.GetComponentsInChildren<MeshRenderer>())
-            {
-                saberRenderer.enabled = IsVisible;
-            }
         }
     }
 

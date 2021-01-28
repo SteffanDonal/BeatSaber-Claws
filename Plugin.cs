@@ -1,8 +1,11 @@
-﻿using HarmonyLib;
+﻿using Claws.Installers;
+using HarmonyLib;
 using IPA;
+using SiraUtil.Zenject;
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using UnityEngine;
 using IPALogger = IPA.Logging.Logger;
 
 [assembly: AssemblyTitle("Claws")]
@@ -17,10 +20,13 @@ namespace Claws
     public class Plugin
     {
         internal const string CapabilityName = @"Claws";
-        internal const string ClawsSaberName = "Claws.saber";
+        internal const string ClawsSaberName = "Claws.Claws.saber";
         internal const string DefaultSaberName = "DefaultSabers";
 
         static Assembly Assembly { get; } = Assembly.GetExecutingAssembly();
+
+        static internal GameObject LeftSaber;
+        static internal GameObject RightSaber;
 
         public static readonly string Name = Assembly.GetCustomAttribute<AssemblyTitleAttribute>()?.Title;
         public static readonly string Version = Assembly.GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version;
@@ -39,9 +45,23 @@ namespace Claws
         static Gamemode _gamemode;
 
         [Init]
-        public void Init(object _, IPALogger log)
+        public void Init(object _, IPALogger log, Zenjector zenjector)
         {
             Log = log;
+
+            var sabers = AssetBundle.LoadFromStream(Assembly.GetManifestResourceStream(ClawsSaberName)).LoadAsset<GameObject>("_CustomSaber");
+
+            foreach (Transform t in sabers.transform)
+            {
+                if (t.name == "LeftSaber")
+                    LeftSaber = t.gameObject;
+                else if (t.name == "RightSaber")
+                    RightSaber = t.gameObject;
+                if (LeftSaber != null && RightSaber != null)
+                    break;
+            }
+
+            zenjector.OnGame<SaberModelInstaller>();
         }
 
         [OnStart]
