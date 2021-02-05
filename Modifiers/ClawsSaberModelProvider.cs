@@ -32,6 +32,8 @@ namespace Claws.Modifiers
                 _saber = UnityEngine.Object.Instantiate(Plugin.RightSaber, parent, false);
             }
 
+            _saber.transform.localScale = new Vector3(1, 1, Preferences.Length / 0.30f);
+
             SetColor(_color ?? _colorManager.ColorForSaberType(saber.saberType));
 
             this.trail = _saber.AddComponent<ClawTrail>();
