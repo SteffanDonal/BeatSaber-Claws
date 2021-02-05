@@ -98,6 +98,52 @@ namespace Claws.Modifiers
             return bottom + (top - bottom).normalized * TRAIL_LENGTH;
         }
 
+        public override void OnEnable()
+        {
+            if (_inited)
+            {
+                ResetTrailData();
+                _trailRenderer.UpdateMesh(_trailElementCollection, _color);
+                leftClawRenderer.UpdateMesh(_trailElementCollection, _color);
+                rightClawRenderer.UpdateMesh(_trailElementCollection, _color);
+            }
+            if (_trailRenderer)
+                _trailRenderer.enabled = true;
+            if (leftClawRenderer)
+                leftClawRenderer.enabled = true;
+            if (rightClawRenderer)
+                rightClawRenderer.enabled = true;
+        }
+
+        public override void OnDisable()
+        {
+            if (_trailRenderer)
+                _trailRenderer.enabled = false;
+            if (leftClawRenderer)
+                leftClawRenderer.enabled = false;
+            if (rightClawRenderer)
+                rightClawRenderer.enabled = false;
+        }
+
+        public override void OnDestroy()
+        {
+            if (_trailRenderer)
+                UnityEngine.Object.Destroy(_trailRenderer.gameObject);
+            if (leftClawRenderer)
+                UnityEngine.Object.Destroy(leftClawRenderer.gameObject);
+            if (rightClawRenderer)
+                UnityEngine.Object.Destroy(rightClawRenderer.gameObject);
+        }
+
+        public override void ResetTrailData()
+        {
+            BladeMovementDataElement lastAddedData = _movementData.lastAddedData;
+            Vector3 bottomPos = lastAddedData.bottomPos;
+            Vector3 topPos = lastAddedData.topPos;
+            _lastTrailElementTime = lastAddedData.time;
+            _trailElementCollection.InitSnapshots(bottomPos, calcNewTopPos(bottomPos, topPos), _lastTrailElementTime);
+        }
+
         public override float GetTrailWidth(BladeMovementDataElement lastAddedData) => TRAIL_LENGTH;
     }
 }
