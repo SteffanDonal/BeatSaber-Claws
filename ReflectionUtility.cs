@@ -20,7 +20,6 @@ namespace Claws
             if ((targetProperty = type.GetProperty(memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)) != null)
             {
                 targetProperty.SetValue(target, value);
-                return;
             }
         }
 
@@ -37,7 +36,6 @@ namespace Claws
             if ((targetProperty = type.GetProperty(memberName, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)) != null)
             {
                 targetProperty.SetValue(null, value);
-                return;
             }
         }
 

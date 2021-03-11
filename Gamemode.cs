@@ -1,8 +1,9 @@
-﻿using BeatSaberMarkupLanguage.GameplaySetup;
+﻿using System;
+using BeatSaberMarkupLanguage.GameplaySetup;
 using BS_Utils.Utilities;
 using Claws.Modifiers;
 using Claws.Views;
-using System;
+using SongCore;
 
 namespace Claws
 {
@@ -47,9 +48,9 @@ namespace Claws
         void UpdateCapability()
         {
             if (Plugin.IsEnabled)
-                SongCore.Collections.RegisterCapability(Plugin.CapabilityName);
+                Collections.RegisterCapability(Plugin.CapabilityName);
             else
-                SongCore.Collections.DeregisterizeCapability(Plugin.CapabilityName);
+                Collections.DeregisterizeCapability(Plugin.CapabilityName);
         }
     }
 }

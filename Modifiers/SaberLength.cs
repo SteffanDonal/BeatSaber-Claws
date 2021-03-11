@@ -1,6 +1,6 @@
-﻿using HarmonyLib;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using HarmonyLib;
 using UnityEngine;
 
 namespace Claws.Modifiers
@@ -46,7 +46,7 @@ namespace Claws.Modifiers
 
     [HarmonyPatch(typeof(SaberModelContainer))]
     [HarmonyPatch(nameof(SaberModelContainer.Start))]
-    class SaberLengthSaberInitPatch
+    internal class SaberLengthSaberInitPatch
     {
         static void Postfix(SaberModelContainer __instance)
         {

@@ -1,22 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Claws.Modifiers
 {
-    class ClawTrail : SaberTrail
+    internal class ClawTrail : SaberTrail
     {
         // The prefab isn't available, so SaberTrail.Awake would fail
         public override void Awake() { }
 
-        private SaberTrailRenderer leftClawRenderer, rightClawRenderer;
+        SaberTrailRenderer _leftClawRenderer, _rightClawRenderer;
 
-        private static float TRAIL_Y_OFFSET = 0.0075f;
-        private static float TRAIL_X_OFFSET = 0.025f;
-        private static float TRAIL_LENGTH => Preferences.Length * 0.75f;
+        const float TrailYOffset = 0.0075f;
+        const float TrailXOffset = 0.025f;
+        static float TrailLength => Preferences.Length * 0.75f;
 
         public void RegisterPrefab(SaberTrailRenderer prefab)
         {
@@ -25,24 +21,24 @@ namespace Claws.Modifiers
         public override void Init()
         {
             if (!_trailRenderer)
-                _trailRenderer = UnityEngine.Object.Instantiate<SaberTrailRenderer>(_trailRendererPrefab, new Vector3(0, TRAIL_Y_OFFSET), Quaternion.identity);
-            if (!leftClawRenderer)
-                leftClawRenderer = UnityEngine.Object.Instantiate<SaberTrailRenderer>(_trailRendererPrefab, new Vector3(-TRAIL_X_OFFSET, TRAIL_Y_OFFSET), Quaternion.identity);
-            if (!rightClawRenderer)
-                rightClawRenderer = UnityEngine.Object.Instantiate<SaberTrailRenderer>(_trailRendererPrefab, new Vector3(TRAIL_X_OFFSET, TRAIL_Y_OFFSET), Quaternion.identity);
+                _trailRenderer = Instantiate(_trailRendererPrefab, new Vector3(0, TrailYOffset), Quaternion.identity);
+            if (!_leftClawRenderer)
+                _leftClawRenderer = Instantiate(_trailRendererPrefab, new Vector3(-TrailXOffset, TrailYOffset), Quaternion.identity);
+            if (!_rightClawRenderer)
+                _rightClawRenderer = Instantiate(_trailRendererPrefab, new Vector3(TrailXOffset, TrailYOffset), Quaternion.identity);
 
             _sampleStep = 1f / _samplingFrequency;
-            BladeMovementDataElement lastAddedData = _movementData.lastAddedData;
-            Vector3 bottomPos = lastAddedData.bottomPos;
-            Vector3 topPos = lastAddedData.topPos;
+            var lastAddedData = _movementData.lastAddedData;
+            var bottomPos = lastAddedData.bottomPos;
+            var topPos = lastAddedData.topPos;
             _lastTrailElementTime = lastAddedData.time;
-            _trailElementCollection = new TrailElementCollection(Mathf.CeilToInt(_samplingFrequency * _trailDuration) + 3, bottomPos, calcNewTopPos(bottomPos, topPos), _lastTrailElementTime);
-            float trailWidth = GetTrailWidth(lastAddedData);
+            _trailElementCollection = new TrailElementCollection(Mathf.CeilToInt(_samplingFrequency * _trailDuration) + 3, bottomPos, CalcNewTopPos(bottomPos, topPos), _lastTrailElementTime);
+            var trailWidth = GetTrailWidth(lastAddedData);
             _whiteSectionMaxDuration = Math.Min(_whiteSectionMaxDuration, _trailDuration);
             _lastZScale = transform.lossyScale.z;
             _trailRenderer.Init(trailWidth, _trailDuration, _granularity, _whiteSectionMaxDuration);
-            leftClawRenderer.Init(trailWidth, _trailDuration, _granularity, _whiteSectionMaxDuration);
-            rightClawRenderer.Init(trailWidth, _trailDuration, _granularity, _whiteSectionMaxDuration);
+            _leftClawRenderer.Init(trailWidth, _trailDuration, _granularity, _whiteSectionMaxDuration);
+            _rightClawRenderer.Init(trailWidth, _trailDuration, _granularity, _whiteSectionMaxDuration);
             _inited = true;
         }
 
@@ -56,8 +52,8 @@ namespace Claws.Modifiers
             }
             else
             {
-                BladeMovementDataElement lastAddedData = _movementData.lastAddedData;
-                BladeMovementDataElement prevAddedData = _movementData.prevAddedData;
+                var lastAddedData = _movementData.lastAddedData;
+                var prevAddedData = _movementData.prevAddedData;
                 --_framesToScaleCheck;
                 if (_framesToScaleCheck <= 0)
                 {
@@ -68,34 +64,34 @@ namespace Claws.Modifiers
                         _trailRenderer.SetTrailWidth(GetTrailWidth(lastAddedData));
                     }
                 }
-                int numSamples = (int)Mathf.Floor((lastAddedData.time - _lastTrailElementTime) / _sampleStep);
-                for (int index = 0; index < numSamples; ++index)
+                var numSamples = (int)Mathf.Floor((lastAddedData.time - _lastTrailElementTime) / _sampleStep);
+                for (var index = 0; index < numSamples; ++index)
                 {
                     _lastTrailElementTime += _sampleStep;
-                    float t = (lastAddedData.time - _lastTrailElementTime) / (lastAddedData.time - prevAddedData.time);
+                    var t = (lastAddedData.time - _lastTrailElementTime) / (lastAddedData.time - prevAddedData.time);
 
-                    Vector3 bottom = Vector3.LerpUnclamped(lastAddedData.bottomPos, prevAddedData.bottomPos, t);
-                    Vector3 top = Vector3.LerpUnclamped(lastAddedData.topPos, prevAddedData.topPos, t);
+                    var bottom = Vector3.LerpUnclamped(lastAddedData.bottomPos, prevAddedData.bottomPos, t);
+                    var top = Vector3.LerpUnclamped(lastAddedData.topPos, prevAddedData.topPos, t);
 
-                    _trailElementCollection.head.SetData(bottom, calcNewTopPos(bottom, top), _lastTrailElementTime);
+                    _trailElementCollection.head.SetData(bottom, CalcNewTopPos(bottom, top), _lastTrailElementTime);
                     _trailElementCollection.MoveTailToHead();
                 }
                 _trailElementCollection.head.SetData(lastAddedData.bottomPos, lastAddedData.topPos, lastAddedData.time);
                 _trailElementCollection.UpdateDistances();
 
-                _trailRenderer.transform.position = this.transform.rotation * new Vector3(0, TRAIL_Y_OFFSET);
-                leftClawRenderer.transform.position = this.transform.rotation * new Vector3(-TRAIL_X_OFFSET, TRAIL_Y_OFFSET);
-                rightClawRenderer.transform.position = this.transform.rotation * new Vector3(TRAIL_X_OFFSET, TRAIL_Y_OFFSET);
+                _trailRenderer.transform.position = transform.rotation * new Vector3(0, TrailYOffset);
+                _leftClawRenderer.transform.position = transform.rotation * new Vector3(-TrailXOffset, TrailYOffset);
+                _rightClawRenderer.transform.position = transform.rotation * new Vector3(TrailXOffset, TrailYOffset);
 
                 _trailRenderer.UpdateMesh(_trailElementCollection, _color);
-                leftClawRenderer.UpdateMesh(_trailElementCollection, _color);
-                rightClawRenderer.UpdateMesh(_trailElementCollection, _color);
+                _leftClawRenderer.UpdateMesh(_trailElementCollection, _color);
+                _rightClawRenderer.UpdateMesh(_trailElementCollection, _color);
             }
         }
 
-        private Vector3 calcNewTopPos(Vector3 bottom, Vector3 top)
+        Vector3 CalcNewTopPos(Vector3 bottom, Vector3 top)
         {
-            return bottom + (top - bottom).normalized * TRAIL_LENGTH;
+            return bottom + (top - bottom).normalized * TrailLength;
         }
 
         public override void OnEnable()
@@ -104,46 +100,46 @@ namespace Claws.Modifiers
             {
                 ResetTrailData();
                 _trailRenderer.UpdateMesh(_trailElementCollection, _color);
-                leftClawRenderer.UpdateMesh(_trailElementCollection, _color);
-                rightClawRenderer.UpdateMesh(_trailElementCollection, _color);
+                _leftClawRenderer.UpdateMesh(_trailElementCollection, _color);
+                _rightClawRenderer.UpdateMesh(_trailElementCollection, _color);
             }
             if (_trailRenderer)
                 _trailRenderer.enabled = true;
-            if (leftClawRenderer)
-                leftClawRenderer.enabled = true;
-            if (rightClawRenderer)
-                rightClawRenderer.enabled = true;
+            if (_leftClawRenderer)
+                _leftClawRenderer.enabled = true;
+            if (_rightClawRenderer)
+                _rightClawRenderer.enabled = true;
         }
 
         public override void OnDisable()
         {
             if (_trailRenderer)
                 _trailRenderer.enabled = false;
-            if (leftClawRenderer)
-                leftClawRenderer.enabled = false;
-            if (rightClawRenderer)
-                rightClawRenderer.enabled = false;
+            if (_leftClawRenderer)
+                _leftClawRenderer.enabled = false;
+            if (_rightClawRenderer)
+                _rightClawRenderer.enabled = false;
         }
 
         public override void OnDestroy()
         {
             if (_trailRenderer)
-                UnityEngine.Object.Destroy(_trailRenderer.gameObject);
-            if (leftClawRenderer)
-                UnityEngine.Object.Destroy(leftClawRenderer.gameObject);
-            if (rightClawRenderer)
-                UnityEngine.Object.Destroy(rightClawRenderer.gameObject);
+                Destroy(_trailRenderer.gameObject);
+            if (_leftClawRenderer)
+                Destroy(_leftClawRenderer.gameObject);
+            if (_rightClawRenderer)
+                Destroy(_rightClawRenderer.gameObject);
         }
 
         public override void ResetTrailData()
         {
-            BladeMovementDataElement lastAddedData = _movementData.lastAddedData;
-            Vector3 bottomPos = lastAddedData.bottomPos;
-            Vector3 topPos = lastAddedData.topPos;
+            var lastAddedData = _movementData.lastAddedData;
+            var bottomPos = lastAddedData.bottomPos;
+            var topPos = lastAddedData.topPos;
             _lastTrailElementTime = lastAddedData.time;
-            _trailElementCollection.InitSnapshots(bottomPos, calcNewTopPos(bottomPos, topPos), _lastTrailElementTime);
+            _trailElementCollection.InitSnapshots(bottomPos, CalcNewTopPos(bottomPos, topPos), _lastTrailElementTime);
         }
 
-        public override float GetTrailWidth(BladeMovementDataElement lastAddedData) => TRAIL_LENGTH;
+        public override float GetTrailWidth(BladeMovementDataElement lastAddedData) => TrailLength;
     }
 }

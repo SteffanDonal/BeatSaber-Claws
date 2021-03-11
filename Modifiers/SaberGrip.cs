@@ -33,7 +33,7 @@ namespace Claws.Modifiers
 
     [HarmonyPatch(typeof(DevicelessVRHelper))]
     [HarmonyPatch(nameof(IVRPlatformHelper.AdjustControllerTransform))]
-    class SaberGripDevicelessControllerPatch
+    internal class SaberGripDevicelessControllerPatch
     {
         static void Postfix(
             DevicelessVRHelper __instance,
@@ -44,7 +44,7 @@ namespace Claws.Modifiers
 
     [HarmonyPatch(typeof(OculusVRHelper))]
     [HarmonyPatch(nameof(IVRPlatformHelper.AdjustControllerTransform))]
-    class SaberGripOculusControllerPatch
+    internal class SaberGripOculusControllerPatch
     {
         static void Postfix(
             OculusVRHelper __instance,
@@ -55,7 +55,7 @@ namespace Claws.Modifiers
 
     [HarmonyPatch(typeof(OpenVRHelper))]
     [HarmonyPatch(nameof(IVRPlatformHelper.AdjustControllerTransform))]
-    class SaberGripOpenVRControllerPatch
+    internal class SaberGripOpenVRControllerPatch
     {
         static void Postfix(
             OpenVRHelper __instance,

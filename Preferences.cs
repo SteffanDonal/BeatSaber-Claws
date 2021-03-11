@@ -13,7 +13,7 @@ namespace Claws
         Touch,
         WMR,
         Knuckles,
-        OculusStoreTouch,
+        OculusStoreTouch
     }
 
     internal static class Preferences
