@@ -1,10 +1,10 @@
-﻿using Claws.Installers;
+﻿using System;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using Claws.Installers;
 using HarmonyLib;
 using IPA;
 using SiraUtil.Zenject;
-using System;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using UnityEngine;
 using IPALogger = IPA.Logging.Logger;
 
