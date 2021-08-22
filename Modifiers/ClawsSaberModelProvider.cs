@@ -21,8 +21,8 @@ namespace Claws.Modifiers
         public override void Init(Transform parent, Saber saber)
         {
             _saber = Instantiate(
-                saber.saberType == SaberType.SaberA 
-                    ? Plugin.LeftSaber 
+                saber.saberType == SaberType.SaberA
+                    ? Plugin.LeftSaber
                     : Plugin.RightSaber,
                 parent, false);
 
@@ -32,7 +32,7 @@ namespace Claws.Modifiers
 
             _trail = _saber.AddComponent<ClawTrail>();
             _trail.RegisterPrefab(_saberTrail.GetPrivateField<SaberTrailRenderer>("_trailRendererPrefab"));
-            _trail.Setup(_color ?? _colorManager.ColorForSaberType(saber.saberType), saber.movementData);
+            _trail.Setup(((_color ?? _colorManager.ColorForSaberType(saber.saberType)) * _initData.trailTintColor).linear, saber.movementData);
             Plugin.Log.Log(Logger.Level.Debug, "_saberTrail has been activated");
         }
 

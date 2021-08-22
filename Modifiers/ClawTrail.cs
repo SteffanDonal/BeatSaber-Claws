@@ -37,8 +37,8 @@ namespace Claws.Modifiers
             _whiteSectionMaxDuration = Math.Min(_whiteSectionMaxDuration, _trailDuration);
             _lastZScale = transform.lossyScale.z;
             _trailRenderer.Init(trailWidth, _trailDuration, _granularity, _whiteSectionMaxDuration);
-            _leftClawRenderer.Init(trailWidth, _trailDuration, _granularity, _whiteSectionMaxDuration);
-            _rightClawRenderer.Init(trailWidth, _trailDuration, _granularity, _whiteSectionMaxDuration);
+            _leftClawRenderer.Init(trailWidth, _trailDuration * 0.5f, _granularity, _whiteSectionMaxDuration * 0.5f);
+            _rightClawRenderer.Init(trailWidth, _trailDuration * 0.5f, _granularity, _whiteSectionMaxDuration * 0.5f);
             _inited = true;
         }
 
