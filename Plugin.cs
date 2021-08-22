@@ -9,7 +9,7 @@ using UnityEngine;
 using IPALogger = IPA.Logging.Logger;
 
 [assembly: AssemblyTitle("Claws")]
-[assembly: AssemblyFileVersion("1.4.0")]
+[assembly: AssemblyFileVersion("1.5.0")]
 [assembly: AssemblyCopyright("MIT License - Copyright © 2020 Steffan Donal")]
 
 [assembly: Guid("a563479b-6b8d-41f0-9a23-cdc396dd9cf0")]

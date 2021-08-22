@@ -92,13 +92,13 @@ namespace Claws
 
         static VRControllerType GetActiveControllersType()
         {
-            var nodeStates = new List<XRNodeState>();
-            InputTracking.GetNodeStates(nodeStates);
-
-            var controllers = nodeStates
-                .Where(node => node.nodeType == XRNode.LeftHand || node.nodeType == XRNode.RightHand)
-                .Select(node => InputTracking.GetNodeName(node.uniqueID))
-                .Where(controller => !String.IsNullOrWhiteSpace(controller));
+            var controllers = new[]
+                {
+                    XRNode.LeftHand,
+                    XRNode.RightHand
+                }
+                .Select(nodeType => InputDevices.GetDeviceAtXRNode(nodeType).name)
+                .Where(controller => !string.IsNullOrWhiteSpace(controller));
 
             foreach (var controller in controllers)
             {
