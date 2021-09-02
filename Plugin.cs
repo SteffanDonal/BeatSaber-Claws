@@ -20,8 +20,7 @@ namespace Claws
     public class Plugin
     {
         internal const string CapabilityName = @"Claws";
-        internal const string ClawsSaberName = "Claws.Claws.saber";
-        internal const string DefaultSaberName = "DefaultSabers";
+        internal const string ClawsSaberResourceName = "Claws.Claws.saber";
 
         static Assembly Assembly { get; } = Assembly.GetExecutingAssembly();
 
@@ -51,7 +50,7 @@ namespace Claws
 
             GameObject sabers;
 
-            using (var stream = Assembly.GetManifestResourceStream(ClawsSaberName))
+            using (var stream = Assembly.GetManifestResourceStream(ClawsSaberResourceName))
             {
                 sabers = AssetBundle.LoadFromStream(stream).LoadAsset<GameObject>("_CustomSaber");
             }
