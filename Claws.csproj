@@ -95,11 +95,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Gamemode.cs" />
-    <Compile Include="Installers\SaberModelInstaller.cs" />
+    <Compile Include="Modifiers\ClawsModelController.cs" />
     <Compile Include="Modifiers\ClawTrail.cs" />
     <Compile Include="Modifiers\SaberGrip.cs" />
     <Compile Include="Modifiers\SaberLength.cs" />
-    <Compile Include="Modifiers\ClawsSaberModelProvider.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Preferences.cs" />
     <Compile Include="ReflectionUtility.cs" />

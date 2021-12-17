@@ -1,15 +1,16 @@
-﻿using System;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using Claws.Installers;
+﻿using Claws.Modifiers;
 using HarmonyLib;
 using IPA;
+using SiraUtil.Sabers;
 using SiraUtil.Zenject;
+using System;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using IPALogger = IPA.Logging.Logger;
 
 [assembly: AssemblyTitle("Claws")]
-[assembly: AssemblyFileVersion("1.5.1")]
+[assembly: AssemblyFileVersion("1.6.0")]
 [assembly: AssemblyCopyright("MIT License - Copyright © 2020 Steffan Donal")]
 
 [assembly: Guid("a563479b-6b8d-41f0-9a23-cdc396dd9cf0")]
@@ -65,7 +66,11 @@ namespace Claws
                     break;
             }
 
-            zenjector.OnGame<SaberModelInstaller>();
+            zenjector.Install(Location.Player, container =>
+            {
+                if (!IsEnabled) return;
+                container.BindInstance(SaberModelRegistration.Create<ClawsModelController>(int.MaxValue));
+            });
         }
 
         [OnStart]

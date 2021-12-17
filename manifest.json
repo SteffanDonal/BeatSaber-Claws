@@ -3,17 +3,15 @@
   "dependsOn": {
     "BSIPA": "^4.2.0",
     "BS Utils": "^1.11.0",
-    "BeatSaberMarkupLanguage": "^1.5.5",
-    "SiraUtil": "^2.5.8",
-    "SongCore": "^3.7.0"
+    "BeatSaberMarkupLanguage": "^1.6.0",
+    "SiraUtil": "^3.0.0",
+    "SongCore": "^3.9.0"
   },
-  "description": [
-    "Gameplay modifier that shrinks sabers by 70% & alters grip."
-  ],
-  "gameVersion": "1.17.0",
+  "description": "Gameplay modifier that shrinks sabers by 70% & alters grip.",
+  "gameVersion": "1.19.0",
   "id": "claws",
   "name": "Claws",
-  "version": "1.5.1",
+  "version": "1.7.0",
   "features": [
   ],
   "links": {

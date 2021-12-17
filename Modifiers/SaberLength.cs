@@ -35,7 +35,6 @@ namespace Claws.Modifiers
         static void ApplyToSaber(SaberModelContainer saberModelContainer)
         {
             var saber = saberModelContainer.GetPrivateField<Saber>("_saber");
-            var saberModelController = saberModelContainer.GetComponent<SaberModelController>();
 
             var saberTop = saber.GetPrivateField<Transform>("_saberBladeTopTransform");
             var saberBottom = saber.GetPrivateField<Transform>("_saberBladeBottomTransform");
