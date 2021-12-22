@@ -1,10 +1,10 @@
 ﻿{
   "author": "Ruirize",
   "dependsOn": {
-    "BSIPA": "^4.2.0",
-    "BS Utils": "^1.11.0",
+    "BSIPA": "^4.2.1",
+    "BS Utils": "^1.11.1",
     "BeatSaberMarkupLanguage": "^1.6.0",
-    "SiraUtil": "^3.0.0",
+    "SiraUtil": "^3.0.1",
     "SongCore": "^3.9.0"
   },
   "description": "Gameplay modifier that shrinks sabers by 70% & alters grip.",
