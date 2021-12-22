@@ -1,4 +1,4 @@
-# Beat Saber - Claws v1.7.0
+# Beat Saber - Claws v1.7.1
 
 Gameplay modifier that shrinks sabers by 70% (from 1m to 0.3m) & alters grip.
 
