@@ -19,6 +19,8 @@ namespace Claws.Modifiers
                     : Plugin.RightSaber,
                 parent, false);
 
+            gameObject.transform.SetParent(parent);
+
             _saber.transform.localScale = new Vector3(1, 1, Preferences.Length / 0.30f);
 
             Color = _colorManager.ColorForSaberType(saber.saberType);
