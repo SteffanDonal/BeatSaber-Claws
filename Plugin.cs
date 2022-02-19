@@ -23,10 +23,7 @@ namespace Claws
         internal const string CapabilityName = @"Claws";
         internal const string ClawsSaberResourceName = "Claws.Claws.saber";
 
-        static Assembly Assembly { get; } = Assembly.GetExecutingAssembly();
-
-        static internal GameObject LeftSaber;
-        static internal GameObject RightSaber;
+        internal static Assembly Assembly { get; } = Assembly.GetExecutingAssembly();
 
         public static readonly string Name = Assembly.GetCustomAttribute<AssemblyTitleAttribute>()?.Title;
         public static readonly string Version = Assembly.GetCustomAttribute<AssemblyFileVersionAttribute>()?.Version;
@@ -49,22 +46,7 @@ namespace Claws
         {
             Log = log;
 
-            GameObject sabers;
-
-            using (var stream = Assembly.GetManifestResourceStream(ClawsSaberResourceName))
-            {
-                sabers = AssetBundle.LoadFromStream(stream).LoadAsset<GameObject>("_CustomSaber");
-            }
-
-            foreach (Transform t in sabers.transform)
-            {
-                if (t.name == "LeftSaber")
-                    LeftSaber = t.gameObject;
-                else if (t.name == "RightSaber")
-                    RightSaber = t.gameObject;
-                if (LeftSaber != null && RightSaber != null)
-                    break;
-            }
+            ClawsModelController.LoadSaberAsset();
 
             zenjector.Install(Location.Player, container =>
             {
