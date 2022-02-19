@@ -63,7 +63,10 @@ namespace Claws.Modifiers
 
             Color = _colorManager.ColorForSaberType(_saber.saberType);
 
-            Plugin.Log.Log(Logger.Level.Debug, "Claws sabers initialized.");
+            ApplyHitboxMod();
+
+            var saberHand = _saber.saberType == SaberType.SaberA ? "Left" : "Right";
+            Plugin.Log.Log(Logger.Level.Debug, $"{saberHand} claw initialized.");
         }
 
         void SetColor(Color color)
@@ -77,6 +80,14 @@ namespace Claws.Modifiers
                     if (material.HasProperty("_Glow") && material.GetFloat("_Glow") > 0 ||
                         material.HasProperty("_Bloom") && material.GetFloat("_Bloom") > 0)
                         material.color = _color;
+        }
+
+        void ApplyHitboxMod()
+        {
+            var saberTop = _saber.GetPrivateField<Transform>("_saberBladeTopTransform");
+            var saberBottom = _saber.GetPrivateField<Transform>("_saberBladeBottomTransform");
+
+            saberTop.localPosition = new Vector3(saberTop.localPosition.x, saberTop.localPosition.y, saberBottom.localPosition.z + Preferences.Length);
         }
     }
 }

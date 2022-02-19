@@ -98,7 +98,6 @@
     <Compile Include="Modifiers\ClawsModelController.cs" />
     <Compile Include="Modifiers\ClawTrail.cs" />
     <Compile Include="Modifiers\SaberGrip.cs" />
-    <Compile Include="Modifiers\SaberLength.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Preferences.cs" />
     <Compile Include="ReflectionUtility.cs" />

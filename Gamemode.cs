@@ -42,7 +42,6 @@ namespace Claws
         void OnGamemodeToggled(object sender, EventArgs e)
         {
             UpdateCapability();
-            SaberLength.ApplyToSabers();
         }
 
         void UpdateCapability()
