@@ -10,7 +10,6 @@ namespace Claws.Modifiers
         static List<WeakReference<SaberModelContainer>> ActiveSabers => new List<WeakReference<SaberModelContainer>>();
 
         static float CurrentLength => Plugin.IsEnabled ? Preferences.Length : 1.0f;
-        static bool IsVisible => !Plugin.IsEnabled;
 
         internal static void TrackSaber(SaberModelContainer saberModelContainer)
         {

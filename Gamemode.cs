@@ -9,7 +9,7 @@ namespace Claws
 {
     internal class Gamemode
     {
-        GamemodeSettingsViewController _gamemodeSettingsView;
+        readonly GamemodeSettingsViewController _gamemodeSettingsView;
 
         internal Gamemode()
         {

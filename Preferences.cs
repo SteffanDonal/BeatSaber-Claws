@@ -9,24 +9,21 @@ namespace Claws
     internal enum VRControllerType
     {
         Unknown,
-        Vive,
-        Touch,
-        WMR,
-        Knuckles,
-        OculusStoreTouch,
-        OculusQuest
+        Vive,             // HTC Vive Wand
+        Touch,            // Oculus CV1
+        WMR,              // Windows Mixed Reality
+        Knuckles,         // Valve Index
+        OculusStoreTouch, // Oculus Rift S, Oculus Quest 1
+        OculusQuest       // Oculus Quest 2
     }
 
     internal static class Preferences
     {
         const string IsEnabledPreference = @"Claws.Plugin.IsEnabled";
-        const string LastCustomSaberPreference = @"Claws.Plugin.LastCustomSaber";
 
         public const float Length = 0.3f;
 
         public static bool IsEnabled { get; internal set; }
-
-        public static string LastCustomSaber { get; internal set; }
 
         public static Vector3 LeftTranslation { get; private set; }
         public static Vector3 LeftRotation { get; private set; }
@@ -58,7 +55,6 @@ namespace Claws
             Plugin.Log.Info("Storing plugin preferences...");
 
             PlayerPrefs.SetInt(IsEnabledPreference, IsEnabled ? 1 : 0);
-            PlayerPrefs.SetString(LastCustomSaberPreference, LastCustomSaber);
             PlayerPrefs.Save();
 
             Plugin.Log.Info("Stored!");
@@ -69,7 +65,6 @@ namespace Claws
             Plugin.Log.Info("Loading plugin preferences...");
 
             IsEnabled = PlayerPrefs.GetInt(IsEnabledPreference, 0) != 0;
-            LastCustomSaber = PlayerPrefs.GetString(LastCustomSaberPreference, null);
 
             var pluginState = Plugin.IsEnabled ? "enabled" : "disabled";
             Plugin.Log.Info($"Loaded! Plugin is {pluginState}.");
@@ -81,7 +76,7 @@ namespace Claws
             LeftRotation = Vector3.zero;
             var controllerType = GetActiveControllersType();
 
-            Plugin.Log.Debug($"Applying default offsets for {controllerType} controllers!");
+            Plugin.Log.Debug($"Applying offsets for {controllerType} controllers!");
 
             if (DefaultTranslation.ContainsKey(controllerType))
                 LeftTranslation = DefaultTranslation[controllerType];
@@ -149,7 +144,7 @@ namespace Claws
                 if (controller.IndexOf(@"Knuckles", StringComparison.InvariantCultureIgnoreCase) >= 0)
                     return VRControllerType.Knuckles;
 
-                Plugin.Log.Error("Discovering controller: " + controller + " failed! Please open an issue with this log statement.");
+                Plugin.Log.Error("Unidentified controller: " + controller + "; Please open an issue with this log statement.");
             }
 
             return VRControllerType.Unknown;
