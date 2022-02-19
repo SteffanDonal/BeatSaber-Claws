@@ -97,6 +97,7 @@
     <Compile Include="Gamemode.cs" />
     <Compile Include="Modifiers\ClawsModelController.cs" />
     <Compile Include="Modifiers\ClawTrail.cs" />
+    <Compile Include="Modifiers\ClawVisibilityTrackingBehaviour.cs" />
     <Compile Include="Modifiers\SaberGrip.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Preferences.cs" />

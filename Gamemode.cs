@@ -1,9 +1,8 @@
-﻿using System;
-using BeatSaberMarkupLanguage.GameplaySetup;
+﻿using BeatSaberMarkupLanguage.GameplaySetup;
 using BS_Utils.Utilities;
-using Claws.Modifiers;
 using Claws.Views;
 using SongCore;
+using System;
 
 namespace Claws
 {
@@ -30,13 +29,11 @@ namespace Claws
         void OnMenuActivated()
         {
             UpdateCapability();
-            SaberGrip.IsInGame = false;
         }
 
         void OnGameActivated()
         {
             Preferences.Invalidate();
-            SaberGrip.IsInGame = true;
         }
 
         void OnGamemodeToggled(object sender, EventArgs e)
