@@ -73,10 +73,10 @@ namespace Claws.Modifiers
                     var bottom = Vector3.LerpUnclamped(lastAddedData.bottomPos, prevAddedData.bottomPos, t);
                     var top = Vector3.LerpUnclamped(lastAddedData.topPos, prevAddedData.topPos, t);
 
-                    _trailElementCollection.head.SetData(bottom, CalcNewTopPos(bottom, top), _lastTrailElementTime);
+                    _trailElementCollection.SetHeadData(bottom, CalcNewTopPos(bottom, top), _lastTrailElementTime);
                     _trailElementCollection.MoveTailToHead();
                 }
-                _trailElementCollection.head.SetData(lastAddedData.bottomPos, lastAddedData.topPos, lastAddedData.time);
+                _trailElementCollection.SetHeadData(lastAddedData.bottomPos, lastAddedData.topPos, lastAddedData.time);
                 _trailElementCollection.UpdateDistances();
 
                 _trailRenderer.transform.position = transform.rotation * new Vector3(0, TrailYOffset);
