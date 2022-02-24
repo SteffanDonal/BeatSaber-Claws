@@ -1,8 +1,29 @@
-﻿using System;
+﻿using IPA.Utilities;
+using System;
 using UnityEngine;
 
 namespace Claws.Modifiers
 {
+    internal static class TrailElementCollectionExtensions
+    {
+        static readonly AlmostVersion NewTrailApiVersion = new AlmostVersion("1.19.1");
+
+        static FieldAccessor<TrailElementCollection, TrailElement>.Accessor _headAccessor;
+
+        public static void SetTrailHeadData(this TrailElementCollection trailElementCollection, Vector3 start, Vector3 end, float time)
+        {
+            if (UnityGame.GameVersion >= NewTrailApiVersion)
+                trailElementCollection.SetHeadData(start, end, time);
+            else
+            {
+                if (_headAccessor is null)
+                    _headAccessor = FieldAccessor<TrailElementCollection, TrailElement>.GetAccessor("head");
+
+                _headAccessor(ref trailElementCollection).SetData(start, end, time);
+            }
+        }
+    }
+
     internal class ClawTrail : SaberTrail
     {
         // The prefab isn't available, so SaberTrail.Awake would fail
@@ -73,10 +94,10 @@ namespace Claws.Modifiers
                     var bottom = Vector3.LerpUnclamped(lastAddedData.bottomPos, prevAddedData.bottomPos, t);
                     var top = Vector3.LerpUnclamped(lastAddedData.topPos, prevAddedData.topPos, t);
 
-                    _trailElementCollection.SetHeadData(bottom, CalcNewTopPos(bottom, top), _lastTrailElementTime);
+                    _trailElementCollection.SetTrailHeadData(bottom, CalcNewTopPos(bottom, top), _lastTrailElementTime);
                     _trailElementCollection.MoveTailToHead();
                 }
-                _trailElementCollection.SetHeadData(lastAddedData.bottomPos, lastAddedData.topPos, lastAddedData.time);
+                _trailElementCollection.SetTrailHeadData(lastAddedData.bottomPos, lastAddedData.topPos, lastAddedData.time);
                 _trailElementCollection.UpdateDistances();
 
                 _trailRenderer.transform.position = transform.rotation * new Vector3(0, TrailYOffset);
