@@ -18,12 +18,12 @@ I am 180cm tall, and find the difficulty "just right". You can set SteamVR to sc
 Here's how to calculate the correct scale value:
 ```
 Centimeters:
-	180 / Your Height = SteamVR World Scale
-	EG: 180 / 150 = 1.2 = 120%
+	Your Height ÷ 180 = SteamVR World Scale
+	EG: 150 ÷ 180 = 0.83 = 83%
 
 Feet:
-	5.9 / Your Height = SteamVR World Scale
-	EG: 5.9 / 4.9 = 1.2 = 120%
+	Your Height ÷ 5.9 = SteamVR World Scale
+	EG: 4.9 ÷ 5.9 = 0.83 = 83%
 ```
 
 Set this in SteamVR's **Video Settings**, you can find it under Beat Saber > Video Settings. You should able to set this with the game open!
