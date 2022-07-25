@@ -2,6 +2,7 @@
 
 namespace Claws.Modifiers
 {
+    [DefaultExecutionOrder(-1)]
     class ClawVisibilityTrackingBehaviour : MonoBehaviour
     {
         SaberType? _forSaberType;
