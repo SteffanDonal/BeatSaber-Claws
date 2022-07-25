@@ -1,15 +1,32 @@
-# Beat Saber - Claws v1.10.1
+# Beat Saber - Claws v1.10.2
 
 Gameplay modifier that shrinks sabers by 70% (from 1m to 0.3m) & alters grip.
-
-Thanks to [ragesaq](https://twitch.tv/ragesaq) for giving me the original mod and idea for this gamemode!
 
 ## How to Play
 
 1. Install "Claws" using [ModAssistant](https://github.com/Assistant/ModAssistant), or [download the latest version](https://github.com/SteffanDonal/BeatSaber-Claws/releases) and unzip manually.
 2. In the gameplay settings, under mods, find the "Claws" toggle and enable it!
 
-The default saber adjustments that come with Claws are setup for Touch, Rift S, WMR & Index.
+The default saber adjustments that come with Claws are setup for Touch, Rift S, Quest, WMR & Index.
+
+### Difficulty
+
+You may find that Claws mod is particularly easy, or hard for you! The difficulty of this mod is largely based on your armspan.
+
+I am 180cm tall, and find the difficulty "just right". You can set SteamVR to scale everything up or down to match me!
+
+Here's how to calculate the correct scale value:
+```
+Centimeters:
+	180 / Your Height = SteamVR World Scale
+	EG: 180 / 150 = 1.2 = 120%
+
+Feet:
+	5.9 / Your Height = SteamVR World Scale
+	EG: 5.9 / 4.9 = 1.2 = 120%
+```
+
+Set this in SteamVR's **Video Settings**, you can find it under Beat Saber > Video Settings. You should able to set this with the game open!
 
 ### Safety
 
@@ -21,10 +38,9 @@ Also take extra care not to controller smash 🤣
 
 ## Community
 
-[Join my Discord](http://claws.ruirize.co.uk) to chat & share great Claws maps!
+Thanks to [ragesaq](https://twitch.tv/ragesaq) for giving me the original mod and idea for this gamemode!
 
-[Versus Mod](https://versusmod.com/Help) supports Claws! It's a mod that allows you to scorechase with friends and challenge streamers. When you play with Claws, your scores will only be compared with other Clores Scaws. 😉  
-Send me a PM on Discord (_Ruu#9999_) and add me on Steam if you wanna get in on the scorechase!
+[Join my Discord](http://claws.ruirize.co.uk) to chat & share great Claws maps!
 
 ## ToDo / Asks
 
