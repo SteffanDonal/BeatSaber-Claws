@@ -6,48 +6,38 @@ namespace Claws.Modifiers
 {
     internal static class SaberGrip
     {
+        internal static bool IsInGame { get; set; }
         internal static bool IsLeftVisible { get; set; }
         internal static bool IsRightVisible { get; set; }
 
         /// <summary>
-        /// Clears base game offset whenever the sabers are visible.
+        /// When the plugin is enabled, clears player offset preferences when ingame.
         /// </summary>
-        internal static void ClearBaseGameOffsets(XRNode node, ref Vector3 position, ref Vector3 rotation)
+        internal static void ClearBaseGameOffsets(ref Vector3 position, ref Vector3 rotation)
         {
             if (!Plugin.IsEnabled) return;
-
-            switch (node)
-            {
-                case XRNode.LeftHand:
-                    if (!IsLeftVisible) return;
-                    break;
-
-                case XRNode.RightHand:
-                    if (!IsRightVisible) return;
-                    break;
-            }
+            if (!IsInGame) return;
 
             position = Vector3.zero;
             rotation = Vector3.zero;
         }
 
         /// <summary>
-        /// Applies our offsets whenever the sabers are visible.
+        /// When the plugin is enabled, applies current controller offsets when ingame.
         /// </summary>
         internal static void AdjustControllerTransform(XRNode node, Transform transform)
         {
             if (!Plugin.IsEnabled) return;
+            if (!IsInGame) return;
 
             switch (node)
             {
                 case XRNode.LeftHand:
-                    if (!IsLeftVisible) return;
                     transform.Translate(Preferences.LeftTranslation);
                     transform.Rotate(Preferences.LeftRotation);
                     break;
 
                 case XRNode.RightHand:
-                    if (!IsRightVisible) return;
                     transform.Translate(Preferences.RightTranslation);
                     transform.Rotate(Preferences.RightRotation);
                     break;
@@ -63,7 +53,7 @@ namespace Claws.Modifiers
             DevicelessVRHelper __instance,
             XRNode node, Transform transform,
             ref Vector3 position, ref Vector3 rotation
-        ) => SaberGrip.ClearBaseGameOffsets(node, ref position, ref rotation);
+        ) => SaberGrip.ClearBaseGameOffsets(ref position, ref rotation);
 
         static void Postfix(
             DevicelessVRHelper __instance,
@@ -80,7 +70,7 @@ namespace Claws.Modifiers
             OculusVRHelper __instance,
             XRNode node, Transform transform,
             ref Vector3 position, ref Vector3 rotation
-        ) => SaberGrip.ClearBaseGameOffsets(node, ref position, ref rotation);
+        ) => SaberGrip.ClearBaseGameOffsets(ref position, ref rotation);
 
         static void Postfix(
             OculusVRHelper __instance,
@@ -97,7 +87,7 @@ namespace Claws.Modifiers
             OpenVRHelper __instance,
             XRNode node, Transform transform,
             ref Vector3 position, ref Vector3 rotation
-        ) => SaberGrip.ClearBaseGameOffsets(node, ref position, ref rotation);
+        ) => SaberGrip.ClearBaseGameOffsets(ref position, ref rotation);
 
         static void Postfix(
             OpenVRHelper __instance,
