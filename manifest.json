@@ -1,5 +1,11 @@
 ﻿{
+  "$schema": "https://raw.githubusercontent.com/bsmg/BSIPA-MetadataFileSchema/master/Schema.json",
+  "id": "claws",
+  "name": "Claws",
   "author": "Ruirize",
+  "version": "1.10.2",
+  "description": "Gameplay modifier that shrinks sabers by 70% & alters grip.",
+  "gameVersion": "1.29.1",
   "dependsOn": {
     "BSIPA": "^4.2.2",
     "BS Utils": "^1.12.0",
@@ -7,13 +13,6 @@
     "SiraUtil": "^3.1.0",
     "SongCore": "^3.9.6"
   },
-  "description": "Gameplay modifier that shrinks sabers by 70% & alters grip.",
-  "gameVersion": "1.21.0",
-  "id": "claws",
-  "name": "Claws",
-  "version": "1.10.2",
-  "features": [
-  ],
   "links": {
     "project-home": "http://claws.ruirize.co.uk/",
     "project-source": "https://github.com/steffandonal/BeatSaber-Claws/"
