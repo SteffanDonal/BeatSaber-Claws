@@ -3,13 +3,13 @@
   "id": "claws",
   "name": "Claws",
   "author": "Ruirize",
-  "version": "1.10.2",
+  "version": "1.12.0",
   "description": "Gameplay modifier that shrinks sabers by 70% & alters grip.",
-  "gameVersion": "1.29.1",
+  "gameVersion": "1.35.0",
   "dependsOn": {
-    "BSIPA": "^4.2.2",
-    "BeatSaberMarkupLanguage": "^1.6.6",
-    "SiraUtil": "^3.1.0"
+    "BSIPA": "^4.3.2",
+    "BeatSaberMarkupLanguage": "^1.8.0",
+    "SiraUtil": "^3.1.6"
   },
   "links": {
     "project-home": "http://claws.ruirize.co.uk/",

@@ -1,4 +1,4 @@
-# Beat Saber - Claws v1.10.2
+# Beat Saber - Claws v1.12.0
 
 Gameplay modifier that shrinks sabers by 70% (from 1m to 0.3m) & alters grip.
 
@@ -15,7 +15,7 @@ Thanks to [ragesaq](https://twitch.tv/ragesaq) for giving me the original mod an
 1. Install "Claws" using [ModAssistant](https://github.com/Assistant/ModAssistant), or [download the latest version](https://github.com/SteffanDonal/BeatSaber-Claws/releases) and unzip manually.
 2. In the gameplay settings, under mods, find the "Claws" toggle and enable it!
 
-The default saber adjustments that come with Claws are setup for Touch, Rift S, Quest, WMR & Index.
+**Please note:** For now, you will need to create your own controller offsets, as this functionality was broken with the Beat Saber Unity upgrade. It _will_ be back, but for now use the in-game offset preferences please!
 
 ### Difficulty
 

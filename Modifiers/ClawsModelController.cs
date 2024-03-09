@@ -1,10 +1,11 @@
 ﻿using SiraUtil.Interfaces;
 using UnityEngine;
+using Zenject;
 using Logger = IPA.Logging.Logger;
 
 namespace Claws.Modifiers
 {
-    internal class ClawsModelController : SaberModelController, IColorable
+    internal class ClawsModelController : SaberModelController, IColorable, IPreSaberModelInit
     {
         const float ClawsModelScale = 0.3f;
 
@@ -28,7 +29,7 @@ namespace Claws.Modifiers
                 else if (t.name == "RightSaber")
                     RightSaber = t.gameObject;
 
-                if (LeftSaber != null && ClawsModelController.RightSaber != null)
+                if (LeftSaber != null && RightSaber != null)
                     break;
             }
         }
@@ -45,7 +46,12 @@ namespace Claws.Modifiers
         GameObject _saberContainer;
         ClawTrail _trail;
 
-        public override void Init(Transform parent, Saber saber)
+        [InjectOptional] readonly InitData _initData = new InitData();
+        [Inject] readonly ColorManager _colorManager;
+
+        MaterialPropertyBlock _materialPropertyBlock;
+
+        public bool PreInit(Transform parent, Saber saber)
         {
             _saber = saber;
 
@@ -58,8 +64,10 @@ namespace Claws.Modifiers
 
             _saberContainer.transform.localScale = new Vector3(1, 1, Preferences.Length / ClawsModelScale);
 
+            var saberTrail = this.GetPrivateField<SaberTrail>(typeof(SaberModelController), "_saberTrail");
+
             _trail = _saberContainer.AddComponent<ClawTrail>();
-            _trail.RegisterPrefab(_saberTrail.GetPrivateField<SaberTrailRenderer>("_trailRendererPrefab"));
+            _trail.RegisterPrefab(saberTrail.GetPrivateField<SaberTrailRenderer>("_trailRendererPrefab"));
 
             Color = _colorManager.ColorForSaberType(_saber.saberType);
 
@@ -67,6 +75,8 @@ namespace Claws.Modifiers
 
             var saberHand = _saber.saberType == SaberType.SaberA ? "Left" : "Right";
             Plugin.Log.Log(Logger.Level.Debug, $"{saberHand} claw initialized.");
+
+            return false;
         }
 
         void SetColor(Color color)
@@ -75,11 +85,13 @@ namespace Claws.Modifiers
 
             _trail.Setup((_color * _initData.trailTintColor).linear, _saber.movementData);
 
+            if (_materialPropertyBlock == null)
+                _materialPropertyBlock = new MaterialPropertyBlock();
+
+            _materialPropertyBlock.SetColor("_Color", color);
+
             foreach (var renderer in _saberContainer.GetComponentsInChildren<Renderer>())
-                foreach (var material in renderer.materials)
-                    if (material.HasProperty("_Glow") && material.GetFloat("_Glow") > 0 ||
-                        material.HasProperty("_Bloom") && material.GetFloat("_Bloom") > 0)
-                        material.color = _color;
+                renderer.SetPropertyBlock(_materialPropertyBlock);
         }
 
         void ApplyHitboxMod()

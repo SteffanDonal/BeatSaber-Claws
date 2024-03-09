@@ -8,8 +8,8 @@ using System.Runtime.InteropServices;
 using IPALogger = IPA.Logging.Logger;
 
 [assembly: AssemblyTitle("Claws")]
-[assembly: AssemblyFileVersion("1.10.2")]
-[assembly: AssemblyCopyright("MIT License - Copyright © 2022 Steffan Donal")]
+[assembly: AssemblyFileVersion("1.12.0")]
+[assembly: AssemblyCopyright("MIT License - Copyright © 2024 Steffan Donal")]
 
 [assembly: Guid("a563479b-6b8d-41f0-9a23-cdc396dd9cf0")]
 
