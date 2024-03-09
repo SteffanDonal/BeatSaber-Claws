@@ -39,10 +39,10 @@ namespace Claws
             }
         }
 
-        public static T GetPrivateField<T>(this object target, string memberName)
-        {
-            var type = target.GetType();
+        public static T GetPrivateField<T>(this object target, string memberName) => target.GetPrivateField<T>(target.GetType(), memberName);
 
+        public static T GetPrivateField<T>(this object target, Type type, string memberName)
+        {
             FieldInfo targetField;
             if ((targetField = type.GetField(memberName, BindingFlags.Instance | BindingFlags.NonPublic)) != null)
             {
