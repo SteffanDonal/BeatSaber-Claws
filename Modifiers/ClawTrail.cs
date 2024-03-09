@@ -1,35 +1,27 @@
-﻿using IPA.Utilities;
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace Claws.Modifiers
 {
-    internal static class TrailElementCollectionExtensions
+    internal class ClawTrail : MonoBehaviour
     {
-        static readonly AlmostVersion NewTrailApiVersion = new AlmostVersion("1.19.1");
+        SaberTrailRenderer _trailRendererPrefab;
 
-        static FieldAccessor<TrailElementCollection, TrailElement>.Accessor _headAccessor;
+        SaberTrailRenderer _middleClawRenderer, _leftClawRenderer, _rightClawRenderer;
 
-        public static void SetTrailHeadData(this TrailElementCollection trailElementCollection, Vector3 start, Vector3 end, float time)
-        {
-            if (UnityGame.GameVersion >= NewTrailApiVersion)
-                trailElementCollection.SetHeadData(start, end, time);
-            else
-            {
-                if (_headAccessor is null)
-                    _headAccessor = FieldAccessor<TrailElementCollection, TrailElement>.GetAccessor("head");
-
-                _headAccessor(ref trailElementCollection).SetData(start, end, time);
-            }
-        }
-    }
-
-    internal class ClawTrail : SaberTrail
-    {
-        // The prefab isn't available, so SaberTrail.Awake would fail
-        public override void Awake() { }
-
-        SaberTrailRenderer _leftClawRenderer, _rightClawRenderer;
+        float _trailDuration = 0.4f;
+        int _samplingFrequency = 50;
+        int _granularity = 60;
+        float _whiteSectionMaxDuration = 0.1f;
+        Color _color;
+        IBladeMovementData _movementData;
+        float _lastTrailElementTime;
+        TrailElementCollection _trailElementCollection;
+        float _sampleStep;
+        int _framesPassed;
+        float _lastZScale;
+        int _framesToScaleCheck;
+        bool _inited;
 
         const float TrailYOffset = 0.0075f;
         const float TrailXOffset = 0.025f;
@@ -39,10 +31,17 @@ namespace Claws.Modifiers
         {
             _trailRendererPrefab = prefab;
         }
-        public override void Init()
+
+        public void Setup(Color color, IBladeMovementData movementData)
         {
-            if (!_trailRenderer)
-                _trailRenderer = Instantiate(_trailRendererPrefab, new Vector3(0, TrailYOffset), Quaternion.identity);
+            _color = color;
+            _movementData = movementData;
+        }
+
+        public void Init()
+        {
+            if (!_middleClawRenderer)
+                _middleClawRenderer = Instantiate(_trailRendererPrefab, new Vector3(0, TrailYOffset), Quaternion.identity);
             if (!_leftClawRenderer)
                 _leftClawRenderer = Instantiate(_trailRendererPrefab, new Vector3(-TrailXOffset, TrailYOffset), Quaternion.identity);
             if (!_rightClawRenderer)
@@ -57,13 +56,13 @@ namespace Claws.Modifiers
             var trailWidth = GetTrailWidth(lastAddedData);
             _whiteSectionMaxDuration = Math.Min(_whiteSectionMaxDuration, _trailDuration);
             _lastZScale = transform.lossyScale.z;
-            _trailRenderer.Init(trailWidth, _trailDuration, _granularity, _whiteSectionMaxDuration);
+            _middleClawRenderer.Init(trailWidth, _trailDuration, _granularity, _whiteSectionMaxDuration);
             _leftClawRenderer.Init(trailWidth, _trailDuration * 0.65f, _granularity, _whiteSectionMaxDuration * 0.65f);
             _rightClawRenderer.Init(trailWidth, _trailDuration * 0.65f, _granularity, _whiteSectionMaxDuration * 0.65f);
             _inited = true;
         }
 
-        public override void LateUpdate()
+        public void LateUpdate()
         {
             if (_framesPassed <= 4)
             {
@@ -82,7 +81,7 @@ namespace Claws.Modifiers
                     if (!Mathf.Approximately(transform.lossyScale.z, _lastZScale))
                     {
                         _lastZScale = transform.lossyScale.z;
-                        _trailRenderer.SetTrailWidth(GetTrailWidth(lastAddedData));
+                        _middleClawRenderer.SetTrailWidth(GetTrailWidth(lastAddedData));
                     }
                 }
                 var numSamples = (int)Mathf.Floor((lastAddedData.time - _lastTrailElementTime) / _sampleStep);
@@ -94,17 +93,17 @@ namespace Claws.Modifiers
                     var bottom = Vector3.LerpUnclamped(lastAddedData.bottomPos, prevAddedData.bottomPos, t);
                     var top = Vector3.LerpUnclamped(lastAddedData.topPos, prevAddedData.topPos, t);
 
-                    _trailElementCollection.SetTrailHeadData(bottom, CalcNewTopPos(bottom, top), _lastTrailElementTime);
+                    _trailElementCollection.SetHeadData(bottom, CalcNewTopPos(bottom, top), _lastTrailElementTime);
                     _trailElementCollection.MoveTailToHead();
                 }
-                _trailElementCollection.SetTrailHeadData(lastAddedData.bottomPos, lastAddedData.topPos, lastAddedData.time);
+                _trailElementCollection.SetHeadData(lastAddedData.bottomPos, lastAddedData.topPos, lastAddedData.time);
                 _trailElementCollection.UpdateDistances();
 
-                _trailRenderer.transform.position = transform.rotation * new Vector3(0, TrailYOffset);
+                _middleClawRenderer.transform.position = transform.rotation * new Vector3(0, TrailYOffset);
                 _leftClawRenderer.transform.position = transform.rotation * new Vector3(-TrailXOffset, TrailYOffset);
                 _rightClawRenderer.transform.position = transform.rotation * new Vector3(TrailXOffset, TrailYOffset);
 
-                _trailRenderer.UpdateMesh(_trailElementCollection, _color);
+                _middleClawRenderer.UpdateMesh(_trailElementCollection, _color);
                 _leftClawRenderer.UpdateMesh(_trailElementCollection, _color);
                 _rightClawRenderer.UpdateMesh(_trailElementCollection, _color);
             }
@@ -115,44 +114,44 @@ namespace Claws.Modifiers
             return bottom + (top - bottom).normalized * TrailLength;
         }
 
-        public override void OnEnable()
+        public void OnEnable()
         {
             if (_inited)
             {
                 ResetTrailData();
-                _trailRenderer.UpdateMesh(_trailElementCollection, _color);
+                _middleClawRenderer.UpdateMesh(_trailElementCollection, _color);
                 _leftClawRenderer.UpdateMesh(_trailElementCollection, _color);
                 _rightClawRenderer.UpdateMesh(_trailElementCollection, _color);
             }
-            if (_trailRenderer)
-                _trailRenderer.enabled = true;
+            if (_middleClawRenderer)
+                _middleClawRenderer.enabled = true;
             if (_leftClawRenderer)
                 _leftClawRenderer.enabled = true;
             if (_rightClawRenderer)
                 _rightClawRenderer.enabled = true;
         }
 
-        public override void OnDisable()
+        public void OnDisable()
         {
-            if (_trailRenderer)
-                _trailRenderer.enabled = false;
+            if (_middleClawRenderer)
+                _middleClawRenderer.enabled = false;
             if (_leftClawRenderer)
                 _leftClawRenderer.enabled = false;
             if (_rightClawRenderer)
                 _rightClawRenderer.enabled = false;
         }
 
-        public override void OnDestroy()
+        public void OnDestroy()
         {
-            if (_trailRenderer)
-                Destroy(_trailRenderer.gameObject);
+            if (_middleClawRenderer)
+                Destroy(_middleClawRenderer.gameObject);
             if (_leftClawRenderer)
                 Destroy(_leftClawRenderer.gameObject);
             if (_rightClawRenderer)
                 Destroy(_rightClawRenderer.gameObject);
         }
 
-        public override void ResetTrailData()
+        public void ResetTrailData()
         {
             var lastAddedData = _movementData.lastAddedData;
             var bottomPos = lastAddedData.bottomPos;
@@ -161,6 +160,6 @@ namespace Claws.Modifiers
             _trailElementCollection.InitSnapshots(bottomPos, CalcNewTopPos(bottomPos, topPos), _lastTrailElementTime);
         }
 
-        public override float GetTrailWidth(BladeMovementDataElement lastAddedData) => TrailLength;
+        public float GetTrailWidth(BladeMovementDataElement lastAddedData) => TrailLength;
     }
 }
