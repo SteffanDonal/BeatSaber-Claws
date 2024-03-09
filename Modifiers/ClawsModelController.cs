@@ -44,7 +44,6 @@ namespace Claws.Modifiers
         Saber _saber;
         GameObject _saberContainer;
         ClawTrail _trail;
-        ClawVisibilityTrackingBehaviour _visibilityTracking;
 
         public override void Init(Transform parent, Saber saber)
         {
@@ -61,9 +60,6 @@ namespace Claws.Modifiers
 
             _trail = _saberContainer.AddComponent<ClawTrail>();
             _trail.RegisterPrefab(_saberTrail.GetPrivateField<SaberTrailRenderer>("_trailRendererPrefab"));
-
-            _visibilityTracking = _saberContainer.AddComponent<ClawVisibilityTrackingBehaviour>();
-            _visibilityTracking.ForSaberType = _saber.saberType;
 
             Color = _colorManager.ColorForSaberType(_saber.saberType);
 

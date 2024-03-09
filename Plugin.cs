@@ -1,5 +1,4 @@
 ﻿using Claws.Modifiers;
-using HarmonyLib;
 using IPA;
 using SiraUtil.Sabers;
 using SiraUtil.Zenject;
@@ -61,19 +60,6 @@ namespace Claws
                 throw new InvalidOperationException($"Plugin had {nameof(OnStart)} called more than once! Critical failure.");
 
             _isInitialized = true;
-
-            try
-            {
-                var harmony = new Harmony("com.github.steffandonal.claws");
-                harmony.PatchAll(Assembly);
-            }
-            catch (Exception e)
-            {
-                Log.Error("This plugin requires Harmony. Make sure you installed the plugin properly, as the Harmony DLL should have been installed with it.");
-                Log.Error(e.ToString());
-
-                return;
-            }
 
             Preferences.Restore();
             Preferences.Invalidate();
