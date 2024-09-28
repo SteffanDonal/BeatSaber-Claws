@@ -1,17 +1,21 @@
 ﻿using BeatSaberMarkupLanguage.GameplaySetup;
 using Claws.Views;
+using Zenject;
 
 namespace Claws
 {
-    internal class Gamemode
+    internal class Gamemode : IInitializable
     {
         readonly GamemodeSettingsViewController _gamemodeSettingsView;
 
         internal Gamemode()
         {
             _gamemodeSettingsView = new GamemodeSettingsViewController();
+        }
 
-            GameplaySetup.instance.AddTab(
+        public void Initialize()
+        {
+            GameplaySetup.Instance.AddTab(
                 "Claws",
                 GamemodeSettingsViewController.Resource,
                 _gamemodeSettingsView

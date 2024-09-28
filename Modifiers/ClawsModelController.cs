@@ -46,7 +46,7 @@ namespace Claws.Modifiers
         GameObject _saberContainer;
         ClawTrail _trail;
 
-        [InjectOptional] readonly InitData _initData = new InitData();
+        [InjectOptional] readonly SaberModelContainer.InitData _initData = new SaberModelContainer.InitData();
         [Inject] readonly ColorManager _colorManager;
 
         MaterialPropertyBlock _materialPropertyBlock;
@@ -83,7 +83,7 @@ namespace Claws.Modifiers
         {
             _color = color;
 
-            _trail.Setup((_color * _initData.trailTintColor).linear, _saber.movementData);
+            _trail.Setup((_color * _initData.trailTintColor).linear, _saber.movementDataForVisualEffects);
 
             if (_materialPropertyBlock == null)
                 _materialPropertyBlock = new MaterialPropertyBlock();

@@ -37,8 +37,6 @@ namespace Claws
 
         static bool _isInitialized;
 
-        static Gamemode _gamemode;
-
         [Init]
         public void Init(object _, IPALogger log, Zenjector zenjector)
         {
@@ -46,6 +44,7 @@ namespace Claws
 
             ClawsModelController.LoadSaberAsset();
 
+            zenjector.Install(Location.Menu, cont => cont.BindInterfacesTo<Gamemode>().AsSingle());
             zenjector.Install(Location.Player, container =>
             {
                 if (!IsEnabled) return;
@@ -63,8 +62,6 @@ namespace Claws
 
             Preferences.Restore();
             Preferences.Invalidate();
-
-            _gamemode = new Gamemode();
 
             Log.Info($"v{Version} loaded!");
         }
