@@ -46,7 +46,8 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="DataModels">
-      <HintPath>TargetReferences\DataModels.dll</HintPath>
+      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\DataModels.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="GameplayCore">
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\GameplayCore.dll</HintPath>
@@ -106,7 +107,8 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Zenject-usage">
-      <HintPath>TargetReferences\Zenject-usage.dll</HintPath>
+      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\Zenject-usage.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
